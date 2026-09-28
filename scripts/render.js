@@ -129,8 +129,8 @@ ${label(5, 'LVL')}${value(5, pad(stats.repos, 2), C.green)}`;
 export function playerCard(cfg) {
   const H = 300;
   const hs = 3;
-  const idleW = S.HERO_IDLE[0][0].length * hs;
-  const idle = frames(S.HERO_IDLE, S.HERO_PAL, Math.round(126 - idleW / 2), 204 - S.HERO_IDLE[0].length * hs, hs, 1.4, 'breathe');
+  // Centre him on his body (x = 126 is the middle of the portrait frame).
+  const idle = frames(S.HERO_IDLE, S.HERO_PAL, 126 - S.HERO_IDLE_AX * hs, 204 - S.HERO_IDLE[0].length * hs, hs, 1.4, 'breathe');
   const colors = { red: C.red, blue: C.blue, green: C.green, yellow: C.yellow, pink: C.pink };
   const lx = 252;
   const vx = lx + 84;

@@ -1,5 +1,5 @@
 import { C } from './svg.js';
-import { buildFrames, trim, PALETTE } from './ichigo.js';
+import { buildFrames, trim, trimBox, PALETTE, AX } from './ichigo.js';
 
 // Hero frames come from the same composer the game uses, cropped for the README.
 const HERO = buildFrames(false);
@@ -9,6 +9,9 @@ const IDLE = trim(pick(['idle0', 'idle1']));
 const SLASH = trim(pick(['slash1']));
 export const HERO_RUN = [RUN.run0, RUN.run1, RUN.run2, RUN.run3];
 export const HERO_IDLE = [IDLE.idle0, IDLE.idle1];
+// Column of the body's centre (between the boots) inside the cropped idle frames,
+// so layouts can centre him on his body rather than on the blade trailing behind.
+export const HERO_IDLE_AX = AX - trimBox(pick(['idle0', 'idle1'])).x0;
 export const HERO_SLASH = SLASH.slash1;
 export const HERO_PAL = PALETTE;
 

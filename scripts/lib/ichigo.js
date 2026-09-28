@@ -229,8 +229,8 @@ export function buildFrames(mask = false) {
   return Object.fromEntries(Object.entries(POSES).map(([name, pose]) => [name, compose({ ...pose, mask })]));
 }
 
-// Crop transparent margins shared by a set of frames (used for README sprites).
-export function trim(frames) {
+// Bounding box of the opaque pixels shared by a set of frames.
+export function trimBox(frames) {
   let x0 = FRAME_W, x1 = 0, y0 = FRAME_H, y1 = 0;
   for (const rows of Object.values(frames))
     rows.forEach((row, y) =>
@@ -239,5 +239,11 @@ export function trim(frames) {
         x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y);
       })
     );
+  return { x0, x1, y0, y1 };
+}
+
+// Crop transparent margins shared by a set of frames (used for README sprites).
+export function trim(frames) {
+  const { x0, x1, y0, y1 } = trimBox(frames);
   return Object.fromEntries(Object.entries(frames).map(([k, rows]) => [k, rows.slice(y0, y1 + 1).map((r) => r.slice(x0, x1 + 1))]));
 }
