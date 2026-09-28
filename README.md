@@ -65,6 +65,7 @@ int main() {
 
 <img src="assets/divider-bonus.svg" width="100%" alt="Bonus stage: Hollow Rush">
 <a href="https://jay-patel1337-six.vercel.app/play"><img src="assets/play-card.svg" width="100%" alt="Hollow Rush: a playable retro runner. Click to play in your browser."></a>
+<a href="https://jay-patel1337-six.vercel.app/play"><img src="https://jay-patel1337-six.vercel.app/api/scores?format=svg" width="100%" alt="Hollow Rush hall of fame: the top 5 scores, updated live"></a>
 
 <img src="assets/divider-boss.svg" width="100%" alt="Final world: Boss fight">
 <picture>
