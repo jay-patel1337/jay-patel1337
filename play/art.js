@@ -54,7 +54,7 @@ function sky() {
   c.width = VW;
   c.height = VH;
   const g = c.getContext('2d');
-  const bands = [[0, '#0b0e1f'], [60, '#141c3e'], [100, '#1d2b53'], [140, '#3a2250'], [165, '#7e2553']];
+  const bands = [[0, '#0b0e1f'], [72, '#141c3e'], [120, '#1d2b53'], [168, '#3a2250'], [198, '#7e2553']];
   bands.forEach(([y, col], i) => {
     const next = bands[i + 1]?.[0] ?? VH;
     g.fillStyle = col;
@@ -69,7 +69,7 @@ function sky() {
   });
   for (let i = 0; i < 70; i++) {
     g.fillStyle = chance(0.25) ? '#fff1e8' : chance(0.5) ? '#c2c3c7' : '#83769c';
-    g.fillRect(Math.floor(rand(0, VW)), Math.floor(rand(0, 120)), 1, 1);
+    g.fillRect(Math.floor(rand(0, VW)), Math.floor(rand(0, 144)), 1, 1);
   }
   return c;
 }
@@ -106,7 +106,7 @@ export function loadArt() {
     waveBankai: bake(waveB.rows, waveB.pal),
     moon: moon(),
     sky: sky(),
-    far: skyline(640, 30, 70, '#141a38', '#2b3a6b'),
-    mid: skyline(640, 40, 95, '#1f1a3d', '#6b4a2a'),
+    far: skyline(640, 36, 84, '#141a38', '#2b3a6b'),
+    mid: skyline(640, 48, 114, '#1f1a3d', '#6b4a2a'),
   };
 }

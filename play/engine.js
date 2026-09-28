@@ -1,8 +1,8 @@
 // Canvas, input, sprite baking and pixel text for Hollow Rush.
 import { glyph, normalize } from '/scripts/lib/pixel-font.js';
 
-export const VW = 320;
-export const VH = 180;
+export const VW = 384;
+export const VH = 216;
 
 export function setupCanvas(canvas) {
   canvas.width = VW;

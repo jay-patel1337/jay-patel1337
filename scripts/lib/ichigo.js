@@ -1,203 +1,173 @@
-// Ichigo-inspired hero, composed from parts so every frame stays consistent.
-// Frames are 48×36 character grids; the feet rest on row AY-1 and are centred on AX.
-// Used by the README renderer (SVG) and by the game at /play (canvas).
+// Ichigo-inspired hero (after a perler-bead design), composed from layered parts
+// so every frame stays consistent. Faces right. Frames are 80×50 character grids;
+// feet rest on row AY-2 and are centred on AX. Shared by the README SVGs and /play.
 
 import { Grid } from './pixel-canvas.js';
 
-export const FRAME_W = 48;
-export const FRAME_H = 36;
-export const AX = 22;
-export const AY = 35;
-const X0 = 10; // local body space (24×32) → frame space
-const Y0 = 2;
+export const FRAME_W = 80;
+export const FRAME_H = 54;
+const X0 = 16; // local body space (32×44) → frame space
+const Y0 = 8;
+export const AX = X0 + 16;
+export const AY = Y0 + 45;
 
 export const PALETTE = {
   x: '#000000', // outline
-  O: '#ffa300', // hair
-  o: '#d0600e', // hair shadow
-  s: '#ffccaa', // skin
-  S: '#e8967a', // skin shadow
-  e: '#1b1030', // eye
-  b: '#8a3a12', // brow
-  m: '#b25a4a', // mouth
-  k: '#16162a', // robe
-  K: '#3a3a5e', // robe fold
-  w: '#fff1e8', // white collar / tabi / hilt wrap
-  W: '#c2c3c7', // white shade
-  r: '#ff004d', // strap / coat lining
-  R: '#a8123f', // strap shade
-  g: '#c2c3c7', // blade
-  G: '#fff1e8', // blade edge
-  d: '#6b6f80', // blade spine
-  n: '#ab5236', // sandals
-  c: '#8a8f9e', // chain
+  O: '#ff8a1c', // hair
+  Y: '#ffc93c', // hair highlight
+  o: '#d15a10', // hair shadow
+  q: '#7a2e0c', // deep shadow / brows
+  s: '#ffd2ac', // skin
+  S: '#e89d78', // skin shade
+  e: '#2b1a14', // eyes
+  m: '#a3524a', // mouth
+  k: '#161624', // shihakusho
+  K: '#34344e', // folds
+  j: '#4d4d70', // robe light
+  w: '#fff4ea', // white collar / obi / tabi
+  W: '#c8c4d0', // white shade
+  r: '#e8203a', // strap / coat lining
+  R: '#8e1030', // strap shade
+  g: '#d6dbe6', // blade
+  G: '#ffffff', // blade shine
+  B: '#8fbaf0', // blade sheen
+  d: '#555a6c', // blade edge
+  h: '#2c2c3c', // hilt
+  c: '#eeeef4', // cloth wrap / chain
+  C: '#a3a3b4', // cloth shade
+  n: '#d0223c', // sandals
 };
 
 // Bankai glows: the outline turns crimson.
 export const BANKAI_PALETTE = { ...PALETTE, x: '#7e2553' };
 
 const HEAD = [
-  '...O....O....',
-  '..OO..OOO..O.',
-  '.OOOOOOOOOOO.',
-  'OOOOOOOOOOOO.',
-  '.OOOOOOOOOOOO',
-  'OOOoOOOOOOOOO',
-  '.OOooOOOOOOOO',
-  'OOOoOOsOsOOO.',
-  '.OOoOsssbbbO.',
-  '.OooSssswess.',
-  '..oSsssssssss',
-  '...sssssssms.',
-  '....sssssss..',
-  '.....SSsss...',
+  '..........Y...Y.....',
+  '......Y..YO..YO.....',
+  '....Y.OY.OOYOOO.Y...',
+  '...qOOOOYOOOOOOYO...',
+  '..qoOOOOOOOOYOOOOO..',
+  '.qooOOOOOOOOOOOOOOY.',
+  'qoooOOYOOOOOOOOYOOOO',
+  '.qooOOOOOOOOOOOOOOOO',
+  'qqooOOOoOOsOOOoOsOOq',
+  '.qoooOossOOssOOssOq.',
+  '..qooSsqqqssqqqsss..',
+  '..qoSSsseessseesss..',
+  '..qqSSsseessssesSs..',
+  '...qSssssssssssss...',
+  '....Sssssssmmmss....',
+  '.....SSsssssssss....',
+  '.......SSSsssS......',
 ];
 
-// Front (near-side) arm poses: [stamp, x, y] in local body space.
-const FRONT_ARM = {
-  neutral: [['.kkk', 'kkkK', 'kkkK', 'kkkk', 'kKkk', '.kkk', '..ss', '..sS'], 14, 15],
-  back: [['....kkk', '...kkkk', '..kkkK.', '.kkkk..', 'ssk....', 'sS.....'], 10, 15],
-  fwd: [['.kkk...', 'kkkkk..', 'kkkkkk.', '.kkkkss', '...kkss'], 14, 15],
-  raise: [['ss....', 'sSkkk.', '.kkkkk', '..kkkK', '...kkk'], 9, 14],
-  strike: [['.kkkk....', 'kkkkkkkss', '.kkkkkkss'], 14, 15],
-  follow: [['.kkk...', 'kkkkk..', '.kkkkk.', '..kkkss', '....kss'], 14, 15],
-  up: [['ss...', 'sSk..', '.kkk.', '.kkkk', '..kkk', '..kkk'], 13, 9],
-};
+const CROWN = [
+  '....Y.......Y.......',
+  '...YO......YO....Y..',
+  '..YOO.....YOO...YO..',
+  '.qOOO....YOOO..YOO..',
+  'qoOOOO..OOOOOOOOOO..',
+  'qoOOOOOOOOOOOOOOOO..',
+  '.qoOOOOOOOOOOOOOOO..',
+  'qqoOOOOOOOOOOOOOO...',
+];
+const BACK_HAIR = ['......o', '....qoO', '..qqooO', 'qqooooO', '..qoooO', '...qooO', '.qqoooO', '...qooo', '....qoo', '......q'];
 
-const FAR_ARM = {
-  none: null,
-  fwd: [['kkkk.', 'kkkss'], 15, 17],
-  back: [['.kkk', 'sskk', 'sS..'], 5, 16],
-};
-
-// Hakama + feet, 18 wide, placed at local (3, 23).
+// Hakama + feet, 28 wide, placed at local (2, 31).
+const pad = (rows) => rows.map((r) => `...${r}.`);
 const LEGS = {
-  stand: [
-    '.....kkkkkkkkkk...',
-    '.....kkkkKkkkkk...',
-    '....kkkkkKKkkkkk..',
-    '....kkkkKk.kkkkk..',
-    '....kkkkK..kkkkk..',
-    '...kkkkkK..Kkkkkk.',
-    '...kkkkkk..kkkkkk.',
-    '.....www....www...',
-    '....nnnnn..nnnnn..',
-  ],
+  stand: pad([
+    '....kkkkkkkkkkkkkkkkk...',
+    '...kkkkKkkkkkkkkKkkkkk..',
+    '...kkkkKkkkkkkkkKkkkkk..',
+    '..kkkkKkkkkkkkkkkKkkkkk.',
+    '..kkkkKkkkk.kkkkkKkkkkk.',
+    '..kkkKkkkk...kkkkkKkkkk.',
+    '.kkkkKkkkk...kkkkkKkkkkk',
+    '.kkkKkkkkk...kkkkkkKkkkk',
+    'kkkkKkkkk.....kkkkkKkkkk',
+    'kkkkkkkkk.....kkkkkkkkkk',
+    '..wwwwww.......wwwwwww..',
+    '.wwwwwWw.......wwwwwwWw.',
+    '.nnnnnnn.......nnnnnnnnn',
+  ]),
   stride: [
-    '.....kkkkkkkkkk...',
-    '....kkkkkKkkkkkk..',
-    '...kkkkkK..kkkkkk.',
-    '..kkkkkK....kkkkkk',
-    '.kkkkkK......kkkkk',
-    'kkkkK........kkkkk',
-    'ww............kkkk',
-    'nw.............www',
-    '...............nnn',
+    '.......kkkkkkkkkkkkkkkkk....',
+    '......kkkkKkkkkkkkKkkkkkk...',
+    '.....kkkkKkkkkkkkkkKkkkkkk..',
+    '....kkkkKkkkk...kkkkKkkkkkk.',
+    '...kkkkKkkkk.....kkkkKkkkkkk',
+    '..kkkkKkkkk.......kkkkKkkkkk',
+    '.kkkkKkkkk.........kkkkkkkkk',
+    'kkkkKkkk............kkkkKkkk',
+    'kkkkkkk..............kkkkkkk',
+    'wwwwk.................kkkkkk',
+    'nwww...................wwwww',
+    '.n.....................wwwww',
+    '.......................nnnnn',
   ],
   pass: [
-    '.....kkkkkkkkkk...',
-    '.....kkkkKkkkkkk..',
-    '.....kkkkKkkkkkkk.',
-    '......kkkKkkkkkkk.',
-    '......kkkk.kkkkkk.',
-    '......kkkk...kkww.',
-    '......kkkk....nnw.',
-    '.......www........',
-    '......nnnnn.......',
+    '.......kkkkkkkkkkkkkkkkk....',
+    '.......kkkkKkkkkkkKkkkkkk...',
+    '.......kkkkKkkkkkkkKkkkkkk..',
+    '........kkkKkkkkkkkkKkkkkkk.',
+    '........kkkKkkkkkkkkkKkkkkk.',
+    '.........kkkkkkk..kkkkkkkkk.',
+    '.........kkkkKkk...kkkkkkkk.',
+    '.........kkkkkkk....kkkwwww.',
+    '..........kkkkkk.....nnwwww.',
+    '..........kkkkkk.......nnn..',
+    '..........wwwwww............',
+    '..........wwwwwww...........',
+    '.........nnnnnnnn...........',
   ],
   jump: [
-    '.....kkkkkkkkkk...',
-    '....kkkkkKkkkkkk..',
-    '...kkkkkK..kkkkkk.',
-    '...kkkkK....kkkkk.',
-    '..kkkkk......kkkk.',
-    '..wwkk.......kkww.',
-    '.nnw..........wnn.',
-    '..................',
-    '..................',
+    '.......kkkkkkkkkkkkkkkkk....',
+    '......kkkkKkkkkkkkKkkkkkk...',
+    '.....kkkkKkkkkkkkkkKkkkkkk..',
+    '.....kkkKkkkkk..kkkkKkkkkkk.',
+    '....kkkKkkkkk.....kkkKkkkkk.',
+    '....kkkkkkkk.......kkkkkkkk.',
+    '...wwwkkkkk.........kkkkwww.',
+    '..nwwwwkk............kkwwwwn',
+    '..nnn..................nnn..',
   ],
   fall: [
-    '.....kkkkkkkkkk...',
-    '.....kkkkKkkkkk...',
-    '.....kkkkKKkkkkk..',
-    '.....kkkK..kkkkk..',
-    '.....kkkK...kkkkk.',
-    '....kkkkK...Kkkkk.',
-    '.....www.....www..',
-    '.....nnn.....nnn..',
-    '..................',
+    '.......kkkkkkkkkkkkkkkkk....',
+    '.......kkkkKkkkkkkKkkkkkk...',
+    '......kkkkKkkkkkkkkKkkkkkk..',
+    '......kkkKkkkkkkkkkkKkkkkk..',
+    '......kkkKkkkk..kkkkkKkkkk..',
+    '.....kkkKkkkk....kkkkkKkkkk.',
+    '.....kkkkkkkk.....kkkkkkkkk.',
+    '.....kkkkkkk......kkkkkkkkk.',
+    '......wwwww........wwwwwww..',
+    '......nnnnn........nnnnnnn..',
   ],
 };
 
-// Bankai coat tails (black with crimson lining), drawn behind the legs.
+// Far (back) arm poses: [stamp, x, y, drawnInFront]
+const BACK_ARM = {
+  hang: [['..kkkk', '.kkkkk', '.kkkKk', 'kkkkKk', 'kkkkkk', 'kKkkkk', 'kkkkk.', '.kkkk.', '.ssS..', '.sSs..'], 5, 18, false],
+  back: [['....kkkk', '...kkkkk', '..kkkKk.', '.kkkKk..', 'kkkkk...', 'sSk.....', 'ss......'], 2, 18, false],
+  fwd: [['kkkkkkkk..', '.kkkkkkkk.', '..kkkkkkss', '...kkkkkss'], 18, 20, false],
+};
+
+// Near (sword) arm poses: [stamp, x, y]. `hold` grips the hilt beside the face.
+const FRONT_ARM = {
+  hold: [['.....ss...', '....sSSs..', '....sSsS..', '...kkkkk..', '..kkkkkkk.', '.kkkkKkkkk', 'kkkkKkkkkk', 'kkkkkkkkk.', '.kkkkkkk..', '..kkkkk...', '...kkk....'], 21, 14],
+  back: [['.........kkkk', '......kkkkkkk', '...kkkkkkkkk.', 'sskkkkkkkK...', 'sSSkkkkk.....', 'sSs..........'], 6, 18],
+  strike: [['.kkkkkk.......', 'kkkkkkkkkkksss', 'kkkkkkkkkkksSs', '.kkkkKkkkk.sss', '..kkkkk.......'], 22, 18],
+  follow: [['.......sss', '......sSSs', '......sSss', '.....kkkk.', '....kkkkk.', '...kkkkk..', '..kkkkKk..', '.kkkkkkk..', 'kkkkkkk...'], 21, 10],
+};
+
+// Bankai coat tails, drawn behind the legs.
 const COAT = {
-  stand: [['..kkk', '.kkkk', '.kkrk', 'kkkrk', 'kkrrk', 'kkrrk', 'kkrkk', 'kkrkk', 'k.k.k'], 5, 21],
-  run: [
-    ['.......kkk', '.....kkkkk', '....kkkkkk', '...kkrkkkk', '..kkrrkkkk', '.kkrrkkkk.', 'kkrrkkkkk.', 'krrkkkkk..', 'k.krkk.k..', '.k..k.....'],
-    0,
-    20,
-  ],
+  run: [['..........kkkk', '........kkkkkk', '......kkkkkkkk', '.....kkkrkkkkk', '....kkkrrkkkkk', '...kkkrrkkkkkk', '..kkkrrkkkkkk.', '.kkkrrkkkkkk..', 'kkkrrkkkkkk...', 'kkrrkkk.kkk...', 'krkkk.k..k....', 'k.k.k.........'], -4, 28],
+  stand: [['...kkkk', '..kkkkk', '..kkrkk', '.kkkrkk', '.kkrrkk', '.kkrrkk', 'kkkrrkk', 'kkrrkkk', 'kkrkkkk', 'kkrkkk.', 'k.k.kk.', 'k...k..'], 1, 29],
 };
 
-function torso(g, dy) {
-  const y0 = 14 + dy;
-  g.rect(9, y0, 8, 1, 'k');
-  g.rect(8, y0 + 1, 10, 7, 'k');
-  g.set(10, y0 + 3, 'K').set(10, y0 + 4, 'K').set(10, y0 + 5, 'K');
-  g.set(15, y0 + 5, 'K').set(15, y0 + 6, 'K');
-  // white under-robe forming the V collar
-  g.set(11, y0, 'w').set(12, y0, 's').set(13, y0, 's').set(14, y0, 'w');
-  g.set(12, y0 + 1, 'w').set(13, y0 + 1, 'w');
-  // red sword strap from the front shoulder to the back hip
-  for (let i = 0; i < 8; i++) {
-    g.set(16 - i, y0 + i, 'R');
-    g.set(17 - i, y0 + i, 'r');
-  }
-  // obi
-  g.rect(8, y0 + 8, 10, 1, 'w');
-  g.set(8, y0 + 8, 'W');
-}
-
-// Zangetsu (shikai): a huge cleaver with a white-wrapped hilt.
-const edge = (i, w) => (i === 0 ? 'G' : i === w - 1 ? 'd' : 'g');
-const katana = (i) => (i === 0 ? 'W' : 'K');
-
-function swordOnBack(g, bankai, dy) {
-  if (bankai) {
-    g.band(6, 12 + dy, 0, 30, 2, (t, i) => katana(i));
-    g.set(5, 11 + dy, 'W').set(6, 11 + dy, 'W').set(7, 11 + dy, 'W').set(6, 10 + dy, 'W').set(6, 12 + dy, 'W');
-    g.band(7, 5 + dy, 6, 9 + dy, 1, () => 'k');
-    [[8, 4], [9, 5], [9, 6], [10, 7], [10, 8]].forEach(([x, y]) => g.set(x, y + dy, 'c'));
-    return;
-  }
-  g.band(5, 13 + dy, 1, 28, 5, (t, i) => edge(i, 5));
-  g.band(4, 5 + dy, 5, 12 + dy, 2, (t, i) => (i ? 'W' : 'w'));
-  g.set(3, 5 + dy, 'r').set(2, 6 + dy, 'r').set(2, 7 + dy, 'R');
-}
-
-function swordInHand(g, pose, bankai) {
-  const hilt = bankai ? () => 'k' : (t, i) => (i ? 'W' : 'w');
-  if (pose === 'raise') {
-    g.band(9, 14, 7, 12, 2, hilt);
-    if (bankai) g.band(7, 11, -6, -1, 2, (t, i) => katana(i));
-    else g.band(6, 11, -4, 0, 4, (t, i) => edge(i, 4));
-  } else if (pose === 'strike') {
-    g.rect(21, 16, 3, 2, 'w');
-    if (bankai) {
-      g.rect(24, 15, 1, 4, 'W');
-      g.rect(25, 16, 11, 1, 'W').rect(25, 17, 11, 1, 'K');
-    } else {
-      g.rect(24, 14, 11, 1, 'd').rect(24, 15, 11, 2, 'g').rect(24, 17, 10, 1, 'g').rect(24, 18, 9, 1, 'G');
-      g.set(35, 15, 'g').set(35, 16, 'g');
-    }
-  } else if (pose === 'follow') {
-    g.band(19, 19, 21, 21, 2, hilt);
-    if (bankai) g.band(22, 22, 32, 32, 2, (t, i) => katana(i));
-    else g.band(21, 21, 29, 30, 4, (t, i) => edge(3 - i, 4));
-  }
-}
-
-// Draws in local body coordinates onto the full frame (local x can go negative for swords).
+// Draws in local body coordinates onto the full frame (local x/y can go negative).
 class LocalView {
   constructor(grid) {
     this.g = grid;
@@ -214,58 +184,166 @@ class LocalView {
     this.g.rect(x + X0, y + Y0, w, h, c);
     return this;
   }
-  band(x0, y0, x1, y1, w, paint) {
-    this.g.band(x0 + X0, y0 + Y0, x1 + X0, y1 + Y0, w, paint);
+  // Thick line; `vertical` thickness suits shallow angles, horizontal suits steep ones.
+  line(x0, y0, x1, y1, w, paint, vertical = false) {
+    const steps = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0)) * 2 || 1;
+    for (let s = 0; s <= steps; s++) {
+      const t = s / steps;
+      const x = Math.round(x0 + (x1 - x0) * t);
+      const y = Math.round(y0 + (y1 - y0) * t);
+      for (let i = 0; i < w; i++) vertical ? this.set(x, y + i, paint(t, i)) : this.set(x + i, y, paint(t, i));
+    }
+    return this;
+  }
+  // Polyline through points, painted as a band of colours stacked top to bottom.
+  ribbon(points, colors, dotted = false) {
+    let n = 0;
+    for (let p = 0; p < points.length - 1; p++) {
+      const [x0, y0] = points[p];
+      const [x1, y1] = points[p + 1];
+      const steps = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0)) || 1;
+      for (let s = 0; s <= steps; s++) {
+        n++;
+        if (dotted && n % 3 === 0) continue;
+        const x = Math.round(x0 + ((x1 - x0) * s) / steps);
+        const y = Math.round(y0 + ((y1 - y0) * s) / steps);
+        colors.forEach((c, i) => this.set(x, y + i, c));
+      }
+    }
     return this;
   }
 }
 
-function compose({ legs, front, far = 'none', sword = 'back', bob = 0, bankai = false }) {
-  const frame = new Grid(FRAME_W, FRAME_H);
-  const view = new LocalView(frame);
+const cleaver = (i) => ['d', 'g', 'G', 'g', 'B', 'd'][i] || 'g';
+const cleaverV = (i) => ['d', 'g', 'G', 'B', 'd'][i] || 'g';
+const katana = (i) => (i === 0 ? 'W' : 'K');
 
-  if (sword === 'back') swordOnBack(view, bankai, bob);
-  if (sword === 'raise') swordInHand(view, 'raise', bankai);
+const RIBBONS = {
+  front: [
+    [[26, 6], [28, 3], [28, 0], [26, -3], [27, -6], [30, -7], [33, -6]],
+    [[26, 6], [28, 3], [29, 0], [27, -3], [27, -6], [29, -8], [32, -8]],
+  ],
+  trail: [
+    [[26, 6], [24, 1], [21, -3], [17, -5], [12, -5], [8, -7], [4, -6]],
+    [[26, 6], [23, 1], [19, -4], [15, -6], [11, -5], [7, -6], [3, -8]],
+  ],
+};
+
+function torso(v, dy) {
+  const y = (n) => 17 + n + dy;
+  v.rect(11, y(0), 14, 1, 'k').rect(9, y(1), 17, 11, 'k');
+  v.rect(12, y(0), 3, 1, 'j').set(10, y(1), 'j').set(10, y(2), 'j');
+  for (let n = 4; n <= 10; n++) v.set(12, y(n), 'K');
+  for (let n = 5; n <= 10; n++) v.set(21, y(n), 'K');
+  // white under-robe forming the V collar
+  v.set(13, y(0), 'W').set(14, y(0), 'w').rect(15, y(0), 5, 1, 's').set(20, y(0), 'w').set(21, y(0), 'W');
+  v.set(14, y(1), 'W').set(15, y(1), 'w').rect(16, y(1), 3, 1, 's').set(19, y(1), 'w').set(20, y(1), 'W');
+  v.set(15, y(2), 'W').set(16, y(2), 'w').set(17, y(2), 's').set(18, y(2), 'w').set(19, y(2), 'W');
+  v.set(16, y(3), 'W').set(17, y(3), 'w').set(18, y(3), 'W');
+  // red strap from the back shoulder to the front hip
+  v.line(10, y(1), 22, y(11), 2, (t, i) => (i ? 'R' : 'r'));
+  // white obi with its knot at the front
+  v.rect(9, y(12), 17, 1, 'w').rect(9, y(13), 17, 1, 'W').set(9, y(12), 'W');
+  v.stamp(['.ww.', 'wwWw', 'wWWw', '.wW.', '.w.w', 'w..w'], 21, y(11));
+}
+
+function neck(v, dy) {
+  v.rect(15, 15 + dy, 4, 3, 's').set(15, 17 + dy, 'S').set(18, 17 + dy, 'S');
+}
+
+// Sword held beside the face: hilt up to the pommel, blade angled down behind the back.
+function heldSword(v, bankai, flutter, dy, style) {
+  const path = RIBBONS[style][flutter].map(([x, y]) => [x, y + dy]);
   if (bankai) {
-    const [rows, x, y] = legs === 'stand' || legs === 'fall' ? COAT.stand : COAT.run;
-    view.stamp(rows, x, y + bob);
+    v.ribbon(path, ['c', 'C'], true);
+    v.line(28, 18 + dy, -4, 40, 2, (t, i) => katana(i));
+  } else {
+    v.ribbon(path, ['c', 'c', 'C']);
+    v.line(27, 17 + dy, -6, 37, 7, (t, i) => ['d', 'g', 'G', 'G', 'g', 'B', 'd'][i]);
   }
-  const farArm = FAR_ARM[far];
-  if (farArm) view.stamp(farArm[0], farArm[1], farArm[2] + bob);
-  view.stamp(LEGS[legs], 3, 23);
-  torso(view, bob);
-  view.stamp(HEAD, 6, bob);
-  if (sword === 'strike' || sword === 'follow') swordInHand(view, sword, bankai);
-  const [arm, ax, ay] = FRONT_ARM[front];
-  view.stamp(arm, ax, ay + bob);
+}
+
+function heldHilt(v, bankai, dy) {
+  for (let y = 7; y <= 14; y++) {
+    const wrap = !bankai && y % 3 === 0; // white cord wrapped around a dark grip
+    v.set(26, y + dy, 'h').set(27, y + dy, wrap ? 'W' : 'h');
+  }
+  v.set(26, 6 + dy, 'h').set(27, 6 + dy, 'h');
+  if (bankai) v.rect(25, 15 + dy, 4, 1, 'W').set(26, 16 + dy, 'W').set(27, 16 + dy, 'W');
+}
+
+function swingSword(v, pose, bankai) {
+  if (pose === 'back') {
+    // Wound back low behind the hip.
+    if (bankai) v.line(5, 23, -14, 29, 2, (t, i) => katana(i), true);
+    else v.line(5, 21, -14, 27, 5, (t, i) => cleaverV(i), true);
+    v.rect(6, 22, 2, 2, 'h');
+  } else if (pose === 'strike') {
+    v.rect(36, 19, 3, 2, 'h').ribbon([[35, 21], [32, 25], [34, 29], [31, 33]], bankai ? ['c', 'C'] : ['c', 'c', 'C'], bankai);
+    if (bankai) {
+      v.rect(39, 18, 1, 4, 'W');
+      v.rect(40, 19, 20, 1, 'W').rect(40, 20, 20, 1, 'K');
+    } else {
+      v.rect(39, 17, 21, 1, 'd').rect(39, 18, 21, 1, 'g').rect(39, 19, 21, 1, 'G').rect(39, 20, 20, 1, 'B').rect(39, 21, 19, 1, 'd');
+      v.set(60, 18, 'g').set(60, 19, 'g');
+    }
+  } else if (pose === 'follow') {
+    v.rect(29, 10, 2, 2, 'h');
+    if (bankai) v.line(31, 9, 47, -3, 2, (t, i) => katana(i));
+    else v.line(30, 9, 45, -3, 5, (t, i) => cleaver(i));
+  }
+}
+
+function compose({ legs, back = 'hang', front = 'hold', bob = 0, flutter = 0, ribbon = 'front', bankai = false }) {
+  const frame = new Grid(FRAME_W, FRAME_H);
+  const v = new LocalView(frame);
+  const holding = front === 'hold';
+
+  if (holding) heldSword(v, bankai, flutter, bob, ribbon);
+  if (!holding && front !== 'follow') swingSword(v, front, bankai);
+  if (bankai) {
+    const [rows, x, y] = legs === 'stand' ? COAT.stand : COAT.run;
+    v.stamp(rows, x, y + bob);
+  }
+  const [bRows, bx, by] = BACK_ARM[back];
+  v.stamp(bRows, bx, by + bob);
+  v.stamp(LEGS[legs], 2, 31);
+  neck(v, bob);
+  torso(v, bob);
+  v.stamp(CROWN, 4, bob - 3);
+  v.stamp(BACK_HAIR, 1, bob + 4);
+  v.stamp(HEAD, 7, bob);
+  if (holding) heldHilt(v, bankai, bob);
+  if (front === 'follow') swingSword(v, 'follow', bankai);
+  const [fRows, fx, fy] = FRONT_ARM[front];
+  v.stamp(fRows, fx, fy + (holding ? bob : 0));
   frame.outline('x');
   return frame.rows();
 }
 
 const POSES = {
-  idle0: { legs: 'stand', front: 'neutral' },
-  idle1: { legs: 'stand', front: 'neutral', bob: 1 },
-  run0: { legs: 'stride', front: 'back', far: 'fwd' },
-  run1: { legs: 'pass', front: 'neutral', bob: -1 },
-  run2: { legs: 'stride', front: 'fwd', far: 'back' },
-  run3: { legs: 'pass', front: 'neutral', bob: -1 },
-  jump: { legs: 'jump', front: 'fwd', far: 'back' },
-  fall: { legs: 'fall', front: 'fwd', far: 'back' },
-  slash0: { legs: 'stride', front: 'raise', sword: 'raise' },
-  slash1: { legs: 'stride', front: 'strike', sword: 'strike' },
-  slash2: { legs: 'stride', front: 'follow', sword: 'follow' },
-  hurt: { legs: 'pass', front: 'up', far: 'back' },
+  idle0: { legs: 'stand' },
+  idle1: { legs: 'stand', bob: 1, flutter: 1 },
+  run0: { legs: 'stride', back: 'fwd' },
+  run1: { legs: 'pass', bob: -1, flutter: 1 },
+  run2: { legs: 'stride', back: 'back' },
+  run3: { legs: 'pass', bob: -1, flutter: 1 },
+  jump: { legs: 'jump', back: 'back', flutter: 1 },
+  fall: { legs: 'fall', back: 'fwd' },
+  slash0: { legs: 'stride', front: 'back' },
+  slash1: { legs: 'stride', front: 'strike' },
+  slash2: { legs: 'stride', front: 'follow' },
+  hurt: { legs: 'fall', back: 'back', bob: -1 },
 };
 
 export function buildFrames(bankai = false) {
   return Object.fromEntries(Object.entries(POSES).map(([name, pose]) => [name, compose({ ...pose, bankai })]));
 }
 
-// Crop transparent margins (used for README sprites).
+// Crop transparent margins shared by a set of frames (used for README sprites).
 export function trim(frames) {
-  const all = Object.values(frames);
   let x0 = FRAME_W, x1 = 0, y0 = FRAME_H, y1 = 0;
-  for (const rows of all)
+  for (const rows of Object.values(frames))
     rows.forEach((row, y) =>
       [...row].forEach((c, x) => {
         if (c === '.') return;

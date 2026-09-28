@@ -73,7 +73,8 @@ export default async function handler(req, res) {
       res.statusCode = 200;
       res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
       res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate, max-age=0');
-      res.setHeader('Vercel-CDN-Cache-Control', 'max-age=30');
+      // Serve instantly from Vercel's edge (refreshing in the background) so GitHub's image proxy never times out.
+      res.setHeader('Vercel-CDN-Cache-Control', 'max-age=30, stale-while-revalidate=600');
       return res.end(hallOfFameCard(scores, { enabled }));
     }
 

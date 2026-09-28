@@ -59,8 +59,8 @@ export function titleScreen(cfg) {
     ground += rect(x, 272, 32, 40, C.brown) + rect(x + 6, 282, 4, 4, '#6b2f1a') + rect(x + 22, 296, 4, 4, '#6b2f1a') + rect(x + 14, 304, 4, 4, '#6b2f1a');
   }
 
-  const hs = 3;
-  const run = frames(S.HERO_RUN, S.HERO_PAL, 48, 264 - S.HERO_RUN[0].length * hs, hs, 0.48, 'run');
+  const hs = 2;
+  const run = frames(S.HERO_RUN, S.HERO_PAL, 36, 264 - S.HERO_RUN[0].length * hs, hs, 0.48, 'run');
   const css = run.css + `
 .far{animation:drift 120s linear infinite}
 .near{animation:drift 60s linear infinite}
@@ -128,9 +128,9 @@ ${label(5, 'LVL')}${value(5, pad(stats.repos, 2), C.green)}`;
 // ── 3. Player card ──────────────────────────────────────────────────────────
 export function playerCard(cfg) {
   const H = 300;
-  const hs = 4;
+  const hs = 3;
   const idleW = S.HERO_IDLE[0][0].length * hs;
-  const idle = frames(S.HERO_IDLE, S.HERO_PAL, Math.round(126 - idleW / 2), 180 - S.HERO_IDLE[0].length * hs, hs, 1.4, 'breathe');
+  const idle = frames(S.HERO_IDLE, S.HERO_PAL, Math.round(126 - idleW / 2), 196 - S.HERO_IDLE[0].length * hs, hs, 1.4, 'breathe');
   const colors = { red: C.red, blue: C.blue, green: C.green, yellow: C.yellow, pink: C.pink };
   const lx = 252;
   const vx = lx + 84;
@@ -154,10 +154,10 @@ export function playerCard(cfg) {
   const body = `
 ${box(0, 0, W, H)}
 ${box(24, 24, 204, H - 48, { fill: C.ink, border: C.yellow })}
-${rect(40, 180, 172, 4, C.slate)}
+${rect(40, 196, 172, 4, C.slate)}
 ${idle.body}
-${text(cfg.name, 126, 206, { align: 'center', fill: C.yellow })}
-${text('▶ READY', 126, 234, { align: 'center', fill: C.green, cls: 'blink' })}
+${text(cfg.name, 126, 214, { align: 'center', fill: C.yellow })}
+${text('▶ READY', 126, 240, { align: 'center', fill: C.green, cls: 'blink' })}
 ${text('STATUS', lx, 28, { fill: C.yellow })}${dashes(lx + 84, 34, W - 24 - lx - 84, C.slate)}
 ${rows}
 ${bars}
@@ -532,7 +532,7 @@ ${orbs}
 ${flap.body}
 ${walk.body}
 ${sprite(hero, S.HERO_PAL, heroX, heroY, hs)}
-<g class="wave">${sprite(wave.rows, wave.pal, heroX + hero[0].length * hs - 10, roofA - 16 - 36, hs)}</g>
+<g class="wave">${sprite(wave.rows, wave.pal, heroX + hero[0].length * hs + 8, roofA - 20 - 36, hs)}</g>
 </g>
 <path d="${textPath(logo, 28, 24, 4)}" fill="${C.plum}"/>
 <path d="${textPath(logo, 24, 20, 4)}" fill="${C.yellow}"/>

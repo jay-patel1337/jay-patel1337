@@ -11,12 +11,12 @@ bindTouchButtons(document);
 const touch = matchMedia('(pointer: coarse)').matches;
 
 const STEP = 1 / 60;
-const PX = 72; // player's screen x
-const JUMP_V = -330;
-const SHUNPO_V = -300;
-const G_HELD = 560;
-const G = 1150;
-const MAX_FALL = 480;
+const PX = 86; // player's screen x
+const JUMP_V = -396;
+const SHUNPO_V = -360;
+const G_HELD = 672;
+const G = 1380;
+const MAX_FALL = 576;
 const BANKAI_TIME = 8;
 
 let best = 0;
@@ -59,7 +59,7 @@ function resetWorld(title = false) {
   points = 0;
   combo = 0;
   comboT = 0;
-  speed = title ? 60 : 110;
+  speed = title ? 72 : 132;
   buildings = [];
   platforms = [];
   enemies = [];
@@ -70,11 +70,11 @@ function resetWorld(title = false) {
   popups = [];
   ghosts = [];
   player = {
-    x: PX, y: 150, vy: 0, onGround: true, airJumps: 1, coyote: 0, buffer: 0,
+    x: PX, y: 180, vy: 0, onGround: true, airJumps: 1, coyote: 0, buffer: 0,
     hp: 3, invuln: 0, hurtT: 0, action: null, actionT: 0, hitId: 0, waveFired: false,
     reiatsu: 0, bankai: 0, getsugaCd: 0, shunpoT: 0, runPhase: 0, ghostT: 0,
   };
-  newBuilding(-40, 150, title ? 400 : 520, true);
+  newBuilding(-48, 180, title ? 480 : 624, true);
   extendWorld(title);
 }
 
@@ -92,7 +92,7 @@ function newBuilding(x, roof, w, empty = false) {
   if (chance(0.5)) b.props.push({ type: 'ac', x: Math.floor(rand(8, w - 30)) });
   if (chance(0.35)) b.props.push({ type: 'antenna', x: Math.floor(rand(8, w - 10)) });
   buildings.push(b);
-  if (empty) orbLine(b.x + 180, b.roof - 16, 5);
+  if (empty) orbLine(b.x + 216, b.roof - 20, 5);
   else populate(b);
   return b;
 }
@@ -101,13 +101,13 @@ function extendWorld(title = false) {
   let last = buildings[buildings.length - 1];
   while (last.x + last.w < cam + VW + 240) {
     if (title) {
-      last = newBuilding(last.x + last.w, 150, Math.floor(rand(90, 200)), true);
+      last = newBuilding(last.x + last.w, 180, Math.floor(rand(108, 240)), true);
       continue;
     }
     const d = difficulty();
-    const gap = Math.round(rand(30, 58) + speed * 0.18 + d * 18);
-    const roof = Math.round(clamp(last.roof + rand(-34, 22), 104, 158));
-    const w = Math.round(rand(150, 320) - d * 50);
+    const gap = Math.round(rand(36, 70) + speed * 0.18 + d * 22);
+    const roof = Math.round(clamp(last.roof + rand(-40, 26), 125, 190));
+    const w = Math.round(rand(180, 384) - d * 60);
     const prev = last;
     last = newBuilding(prev.x + prev.w + gap, roof, w);
     if (chance(0.55)) orbArc(prev.x + prev.w - 6, prev.roof);
@@ -115,27 +115,27 @@ function extendWorld(title = false) {
 }
 
 function orbLine(x, y, n) {
-  for (let i = 0; i < n; i++) orbs.push({ type: 'soul', x: x + i * 14, y, t: rand(0, 1) });
+  for (let i = 0; i < n; i++) orbs.push({ type: 'soul', x: x + i * 16, y, t: rand(0, 1) });
 }
 
 // Soul orbs along the arc of a full jump, which also teaches the jump timing.
 function orbArc(x0, y0) {
-  const g = 760;
+  const g = 912;
   for (let i = 1; i <= 5; i++) {
     const tt = i * 0.13;
-    orbs.push({ type: 'soul', x: x0 + speed * tt + 10, y: y0 - 16 + JUMP_V * tt + 0.5 * g * tt * tt, t: rand(0, 1) });
+    orbs.push({ type: 'soul', x: x0 + speed * tt + 12, y: y0 - 20 + JUMP_V * tt + 0.5 * g * tt * tt, t: rand(0, 1) });
   }
 }
 
 function populate(b) {
   const d = difficulty();
   const n = Math.floor(rand(0, 1.3 + d * 2.2));
-  for (let i = 0; i < n; i++) spawnEnemy('grunt', rand(b.x + 60, b.x + b.w - 24), b.roof, b);
-  if (chance(0.22 + d * 0.3)) spawnEnemy('flyer', rand(b.x + 40, b.x + b.w), b.roof - rand(40, 68), b);
-  if (distance > 350 && b.w > 200 && chance(0.14 + d * 0.26)) spawnEnemy('big', b.x + b.w - 34, b.roof, b);
-  if (chance(0.55)) orbLine(Math.floor(rand(b.x + 20, b.x + Math.max(30, b.w - 90))), b.roof - 16, irand(3, 6));
-  if (player.hp < 3 && chance(0.07)) orbs.push({ type: 'heart', x: b.x + b.w / 2, y: b.roof - 34, t: 0 });
-  if (distance > 250 && player.bankai <= 0 && chance(0.045)) orbs.push({ type: 'bankai', x: b.x + b.w * 0.6, y: b.roof - 50, t: 0 });
+  for (let i = 0; i < n; i++) spawnEnemy('grunt', rand(b.x + 72, b.x + b.w - 28), b.roof, b);
+  if (chance(0.22 + d * 0.3)) spawnEnemy('flyer', rand(b.x + 48, b.x + b.w), b.roof - rand(48, 82), b);
+  if (distance > 350 && b.w > 240 && chance(0.14 + d * 0.26)) spawnEnemy('big', b.x + b.w - 40, b.roof, b);
+  if (chance(0.55)) orbLine(Math.floor(rand(b.x + 24, b.x + Math.max(36, b.w - 108))), b.roof - 20, irand(3, 6));
+  if (player.hp < 3 && chance(0.07)) orbs.push({ type: 'heart', x: b.x + b.w / 2, y: b.roof - 40, t: 0 });
+  if (distance > 250 && player.bankai <= 0 && chance(0.045)) orbs.push({ type: 'bankai', x: b.x + b.w * 0.6, y: b.roof - 60, t: 0 });
 }
 
 const ENEMY = {
@@ -152,8 +152,8 @@ const enemyBox = (e) => {
   const [ox, oy, w, h] = ENEMY[e.type].box;
   return { x: e.x + ox, y: e.y + oy, w, h };
 };
-const playerBox = () => ({ x: player.x - 5, y: player.y - 29, w: 10, h: 27 });
-const slashBox = () => ({ x: player.x, y: player.y - 36, w: player.bankai > 0 ? 44 : 38, h: 36 });
+const playerBox = () => ({ x: player.x - 6, y: player.y - 40, w: 12, h: 38 });
+const slashBox = () => ({ x: player.x, y: player.y - 46, w: player.bankai > 0 ? 54 : 48, h: 46 });
 
 // ── Effects ──────────────────────────────────────────────────────────────────
 function burst(x, y, n, colors, spread = 90, up = 60, g = 300, life = 0.5, size = 1) {
@@ -229,8 +229,8 @@ function rescue(reason) {
   combo = 0;
   if (p.hp <= 0) return die();
   const next = buildings.find((b) => b.x + b.w > p.x + 12) || buildings[buildings.length - 1];
-  const x = p.x - 26;
-  platforms.push({ x, roof: next.roof, w: Math.max(52, next.x - x + 8), life: 4 });
+  const x = p.x - 31;
+  platforms.push({ x, roof: next.roof, w: Math.max(62, next.x - x + 10), life: 4 });
   p.y = next.roof;
   p.vy = 0;
   p.onGround = true;
@@ -331,9 +331,9 @@ function updatePlayer(dt) {
   }
 
   for (const b of buildings) {
-    if (b.roof < p.y - 4 && p.x + 5 >= b.x && p.x - 5 < b.x + 4) return rescue('REISHI STEP!');
+    if (b.roof < p.y - 4 && p.x + 6 >= b.x && p.x - 6 < b.x + 5) return rescue('REISHI STEP!');
   }
-  if (p.y > VH + 30) return rescue('REISHI STEP!');
+  if (p.y > VH + 36) return rescue('REISHI STEP!');
 
   // Presses made mid-swing stay queued and fire as soon as the swing ends.
   if (!p.action && input.take('slash')) {
@@ -360,10 +360,10 @@ function updatePlayer(dt) {
   if (p.action) {
     p.actionT += dt;
     if (p.action === 'getsuga') {
-      if (p.actionT < 0.14) burst(p.x + 8, p.y - 20, 1, p.bankai > 0 ? ['#ff004d'] : ['#29adff', '#9fe2ff'], 30, 30, 0, 0.3);
+      if (p.actionT < 0.14) burst(p.x + 10, p.y - 24, 1, p.bankai > 0 ? ['#ff004d'] : ['#29adff', '#9fe2ff'], 30, 30, 0, 0.3);
       if (!p.waveFired && p.actionT >= 0.14) {
         p.waveFired = true;
-        waves.push({ x: p.x + 14, y: p.y - 18, bankai: p.bankai > 0, id: Math.random() });
+        waves.push({ x: p.x + 17, y: p.y - 22, bankai: p.bankai > 0, id: Math.random() });
         shake = 3;
       }
     }
@@ -395,10 +395,10 @@ function updateWorld(dt) {
   const slashing = updatePlayer(dt);
   if (mode !== 'play') return;
 
-  const target = 110 + Math.min(140, distance * 0.07) + (p.bankai > 0 ? 40 : 0);
+  const target = 132 + Math.min(168, distance * 0.084) + (p.bankai > 0 ? 48 : 0);
   speed += (target - speed) * Math.min(1, dt * 2);
   cam += speed * dt;
-  distance += (speed * dt) / 10;
+  distance += (speed * dt) / 12;
   comboT -= dt;
   extendWorld();
 
@@ -409,10 +409,10 @@ function updateWorld(dt) {
     if (e.dead) continue;
     e.t += dt;
     e.flash -= dt;
-    if (e.type === 'grunt') e.x = Math.max(e.b.x + 12, e.x - 22 * dt);
+    if (e.type === 'grunt') e.x = Math.max(e.b.x + 14, e.x - 26 * dt);
     if (e.type === 'flyer') {
-      e.x -= 45 * dt;
-      e.y = e.baseY + Math.sin(e.t * 3.2) * 12;
+      e.x -= 54 * dt;
+      e.y = e.baseY + Math.sin(e.t * 3.2) * 14;
     }
     if (e.type === 'big') {
       const sx = e.x - cam;
@@ -434,9 +434,9 @@ function updateWorld(dt) {
     if (overlap(pb, eb)) {
       if (p.bankai > 0) {
         damage(e, 9);
-      } else if (p.vy > 60 && p.y < eb.y + 10) {
+      } else if (p.vy > 72 && p.y < eb.y + 12) {
         damage(e, 1);
-        p.vy = -290;
+        p.vy = -348;
         p.airJumps = 1;
         sfx.jump();
       } else hurt();
@@ -444,7 +444,7 @@ function updateWorld(dt) {
   }
 
   for (const w of waves) {
-    w.x += (speed + 260) * dt;
+    w.x += (speed + 312) * dt;
     const h = w.bankai ? 40 : 32;
     const wb = { x: w.x - 2, y: w.y - h / 2, w: 16, h };
     for (const e of enemies) if (!e.dead && e.hitBy !== w.id && overlap(wb, enemyBox(e))) (e.hitBy = w.id), damage(e, 9);
@@ -455,7 +455,7 @@ function updateWorld(dt) {
   for (const c of ceros) {
     if (c.dead) continue;
     c.t += dt;
-    c.x -= 110 * dt;
+    c.x -= 132 * dt;
     const cb = { x: c.x - 4, y: c.y - 4, w: 8, h: 8 };
     if (slashing && overlap(sb, cb)) {
       c.dead = true;
@@ -474,7 +474,7 @@ function updateWorld(dt) {
   for (const o of orbs) {
     if (o.taken) continue;
     o.t += dt;
-    if (Math.abs(o.x - p.x) < 9 && o.y > p.y - 34 && o.y < p.y + 4) {
+    if (Math.abs(o.x - p.x) < 10 && o.y > p.y - 44 && o.y < p.y + 4) {
       o.taken = true;
       if (o.type === 'soul') {
         points += 10;
@@ -628,8 +628,8 @@ function drawHero(ox, oy) {
     const k = (p.actionT - 0.04) / 0.16;
     for (let a = -1.2; a <= 1.1; a += 0.05) {
       if (a > -1.2 + k * 2.3) break;
-      const r = 30;
-      ctx.fillRect(sx + 6 + Math.round(Math.cos(a) * r), sy - 18 + Math.round(Math.sin(a) * r * 0.7), 2, 2);
+      const r = 38;
+      ctx.fillRect(sx + 8 + Math.round(Math.cos(a) * r), sy - 24 + Math.round(Math.sin(a) * r * 0.7), 2, 2);
     }
   }
 }
@@ -669,17 +669,17 @@ function drawHud() {
 function drawTitle() {
   const lw = textWidth('HOLLOW RUSH', 3);
   const lx = Math.round(VW / 2 - lw / 2);
-  text(ctx, 'HOLLOW RUSH', lx + 3, 22, '#7e2553', { scale: 3 });
-  text(ctx, 'HOLLOW RUSH', lx, 19, '#ffec27', { scale: 3 });
+  text(ctx, 'HOLLOW RUSH', lx + 3, 25, '#7e2553', { scale: 3 });
+  text(ctx, 'HOLLOW RUSH', lx, 22, '#ffec27', { scale: 3 });
   ctx.save();
   ctx.beginPath();
-  ctx.rect(0, 31, VW, 10);
+  ctx.rect(0, 34, VW, 10);
   ctx.clip();
-  text(ctx, 'HOLLOW RUSH', lx, 19, '#ffa300', { scale: 3 });
+  text(ctx, 'HOLLOW RUSH', lx, 22, '#ffa300', { scale: 3 });
   ctx.restore();
-  text(ctx, 'A KARAKURA TOWN NIGHT RUN', VW / 2, 45, '#ff77a8', { align: 'center' });
-  if (Math.floor(t * 2) % 2 === 0) text(ctx, touch ? 'TAP TO START' : 'PRESS SPACE TO START', VW / 2, 60, '#ffec27', { align: 'center', shadow: '#000' });
-  drawBoard(VW / 2 - 60, 72, 120);
+  text(ctx, 'A KARAKURA TOWN NIGHT RUN', VW / 2, 49, '#ff77a8', { align: 'center' });
+  if (Math.floor(t * 2) % 2 === 0) text(ctx, touch ? 'TAP TO START' : 'PRESS SPACE TO START', VW / 2, 65, '#ffec27', { align: 'center', shadow: '#000' });
+  drawBoard(VW / 2 - 60, 80, 120);
   text(ctx, `BEST ${String(best).padStart(6, '0')}`, VW - 4, 4, '#ff77a8', { align: 'right' });
   ctx.fillStyle = 'rgba(11,14,31,0.85)';
   ctx.fillRect(0, VH - 12, VW, 12);
@@ -703,12 +703,12 @@ function drawBoard(x, y, w) {
 function drawGameOver() {
   ctx.fillStyle = 'rgba(11,14,31,0.6)';
   ctx.fillRect(0, 0, VW, VH);
-  panel(ctx, 70, 16, 180, 66);
-  text(ctx, 'GAME OVER', VW / 2, 24, '#ff004d', { scale: 2, align: 'center', shadow: '#7e2553' });
-  text(ctx, `SCORE ${String(score()).padStart(6, '0')}`, VW / 2, 44, '#fff1e8', { align: 'center' });
-  text(ctx, `BEST  ${String(best).padStart(6, '0')}`, VW / 2, 54, '#ff77a8', { align: 'center' });
-  if (newRecord && Math.floor(t * 3) % 2 === 0) text(ctx, 'NEW RECORD!', VW / 2, 66, '#ffec27', { align: 'center' });
-  drawBoard(VW / 2 - 60, 88, 120);
+  panel(ctx, VW / 2 - 90, 20, 180, 66);
+  text(ctx, 'GAME OVER', VW / 2, 28, '#ff004d', { scale: 2, align: 'center', shadow: '#7e2553' });
+  text(ctx, `SCORE ${String(score()).padStart(6, '0')}`, VW / 2, 48, '#fff1e8', { align: 'center' });
+  text(ctx, `BEST  ${String(best).padStart(6, '0')}`, VW / 2, 58, '#ff77a8', { align: 'center' });
+  if (newRecord && Math.floor(t * 3) % 2 === 0) text(ctx, 'NEW RECORD!', VW / 2, 70, '#ffec27', { align: 'center' });
+  drawBoard(VW / 2 - 60, 96, 120);
   if (!lbFormOpen && Math.floor(t * 2) % 2 === 0) text(ctx, touch ? 'TAP TO RETRY' : 'PRESS SPACE TO RETRY', VW / 2, VH - 14, '#ffec27', { align: 'center', shadow: '#000' });
 }
 
@@ -716,13 +716,13 @@ function render() {
   const ox = Math.round(rand(-shake, shake));
   const oy = Math.round(rand(-shake, shake));
   ctx.drawImage(art.sky, 0, 0);
-  ctx.drawImage(art.moon, 272, 24);
+  ctx.drawImage(art.moon, VW - 52, 26);
   const far = Math.floor(cam * 0.1) % 640;
   ctx.drawImage(art.far, -far, 0);
   ctx.drawImage(art.far, 640 - far, 0);
   const mid = Math.floor(cam * 0.3) % 640;
-  ctx.drawImage(art.mid, -mid, 12);
-  ctx.drawImage(art.mid, 640 - mid, 12);
+  ctx.drawImage(art.mid, -mid, 14);
+  ctx.drawImage(art.mid, 640 - mid, 14);
 
   for (const b of buildings) drawBuilding(b, ox);
   for (const s of platforms) {
@@ -780,16 +780,16 @@ function render() {
   if (mode === 'title') drawTitle();
   else {
     drawHud();
-    if (banner) text(ctx, banner.str, VW / 2, 44, banner.color, { scale: 2, align: 'center', shadow: '#000' });
+    if (banner) text(ctx, banner.str, VW / 2, 52, banner.color, { scale: 2, align: 'center', shadow: '#000' });
     if (mode === 'play' && hintT > 0 && Math.floor(t * 2) % 2 === 0) {
-      text(ctx, touch ? 'TAP JUMP TWICE FOR SHUNPO' : 'SPACE: JUMP, TWICE FOR SHUNPO', VW / 2, 62, '#fff1e8', { align: 'center', shadow: '#000' });
-      text(ctx, touch ? 'SLASH HOLLOWS, FILL REIATSU, GETSUGA!' : 'X: SLASH HOLLOWS  C: GETSUGA TENSHO', VW / 2, 72, '#9fe2ff', { align: 'center', shadow: '#000' });
+      text(ctx, touch ? 'TAP JUMP TWICE FOR SHUNPO' : 'SPACE: JUMP, TWICE FOR SHUNPO', VW / 2, 72, '#fff1e8', { align: 'center', shadow: '#000' });
+      text(ctx, touch ? 'SLASH HOLLOWS, FILL REIATSU, GETSUGA!' : 'X: SLASH HOLLOWS  C: GETSUGA TENSHO', VW / 2, 82, '#9fe2ff', { align: 'center', shadow: '#000' });
     }
     if (mode === 'pause') {
       ctx.fillStyle = 'rgba(11,14,31,0.7)';
       ctx.fillRect(0, 0, VW, VH);
-      text(ctx, 'PAUSED', VW / 2, 70, '#ffec27', { scale: 2, align: 'center' });
-      text(ctx, touch ? 'TAP PAUSE TO RESUME' : 'PRESS P TO RESUME', VW / 2, 92, '#fff1e8', { align: 'center' });
+      text(ctx, 'PAUSED', VW / 2, 88, '#ffec27', { scale: 2, align: 'center' });
+      text(ctx, touch ? 'TAP PAUSE TO RESUME' : 'PRESS P TO RESUME', VW / 2, 110, '#fff1e8', { align: 'center' });
     }
     if (mode === 'over') drawGameOver();
   }

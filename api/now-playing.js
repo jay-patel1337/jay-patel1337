@@ -82,6 +82,6 @@ export default async function handler(req, res) {
   res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
   // Browsers and GitHub's camo proxy must always re-fetch; Vercel's edge may reuse it for 10s.
   res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate, max-age=0');
-  res.setHeader('Vercel-CDN-Cache-Control', 'max-age=10');
+  res.setHeader('Vercel-CDN-Cache-Control', 'max-age=10, stale-while-revalidate=120');
   res.end(svg);
 }
