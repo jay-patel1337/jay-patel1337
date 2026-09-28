@@ -1,0 +1,5 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- api/ scripts/lib/ package.json vercel.json",
+  "redirects": [{ "source": "/", "destination": "https://github.com/jay-patel1337", "permanent": false }]
+}

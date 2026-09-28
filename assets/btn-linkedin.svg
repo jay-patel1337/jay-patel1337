@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="268" height="68" viewBox="0 0 268 68" shape-rendering="crispEdges" role="img" aria-label="LINKEDIN">
+<title>LINKEDIN</title>
+<style>
+@keyframes blink{50%{opacity:0}}
+@keyframes grow{from{transform:scaleX(0)}}
+@keyframes bob{50%{transform:translateY(-4px)}}
+.blink{animation:blink 1s steps(1) infinite}
+.blink-slow{animation:blink 2.4s steps(1) infinite}
+.grow{transform-box:fill-box;transform-origin:left;animation:grow 1.2s both}
+.bob{animation:bob 1s steps(1) infinite}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+
+<path d="M4 0h260v4h4v60h-4v4h-260v-4h-4v-60h4z" fill="#000000"/><path d="M8 4h252v4h4v52h-4v4h-252v-4h-4v-52h4z" fill="#fff1e8"/><path d="M12 8h244v4h4v44h-4v4h-244v-4h-4v-44h4z" fill="#1d2b53"/>
+<path d="M25 16h30v3h-30zM22 19h36v3h-36zM22 22h3v3h-3zM31 22h27v3h-27zM22 25h3v3h-3zM31 25h27v3h-27zM22 28h36v3h-36zM22 31h3v3h-3zM31 31h3v3h-3zM55 31h3v3h-3zM22 34h3v3h-3zM31 34h3v3h-3zM40 34h9v3h-9zM55 34h3v3h-3zM22 37h3v3h-3zM31 37h3v3h-3zM40 37h9v3h-9zM55 37h3v3h-3zM22 40h3v3h-3zM31 40h3v3h-3zM40 40h9v3h-9zM55 40h3v3h-3zM22 43h3v3h-3zM31 43h3v3h-3zM40 43h9v3h-9zM55 43h3v3h-3zM22 46h3v3h-3zM31 46h3v3h-3zM40 46h9v3h-9zM55 46h3v3h-3zM25 49h30v3h-30z" fill="#2d7fd3"/><path d="M25 22h6v3h-6zM25 25h6v3h-6zM25 31h6v3h-6zM34 31h21v3h-21zM25 34h6v3h-6zM34 34h6v3h-6zM49 34h6v3h-6zM25 37h6v3h-6zM34 37h6v3h-6zM49 37h6v3h-6zM25 40h6v3h-6zM34 40h6v3h-6zM49 40h6v3h-6zM25 43h6v3h-6zM34 43h6v3h-6zM49 43h6v3h-6zM25 46h6v3h-6zM34 46h6v3h-6zM49 46h6v3h-6z" fill="#fff1e8"/>
+<path d="M72 27h2v2h-2zM72 29h2v2h-2zM72 31h2v2h-2zM72 33h2v2h-2zM72 35h2v2h-2zM72 37h2v2h-2zM72 39h10v2h-10zM86 27h6v2h-6zM88 29h2v2h-2zM88 31h2v2h-2zM88 33h2v2h-2zM88 35h2v2h-2zM88 37h2v2h-2zM86 39h6v2h-6zM96 27h2v2h-2zM104 27h2v2h-2zM96 29h2v2h-2zM104 29h2v2h-2zM96 31h4v2h-4zM104 31h2v2h-2zM96 33h2v2h-2zM100 33h2v2h-2zM104 33h2v2h-2zM96 35h2v2h-2zM102 35h4v2h-4zM96 37h2v2h-2zM104 37h2v2h-2zM96 39h2v2h-2zM104 39h2v2h-2zM108 27h2v2h-2zM116 27h2v2h-2zM108 29h2v2h-2zM114 29h2v2h-2zM108 31h2v2h-2zM112 31h2v2h-2zM108 33h4v2h-4zM108 35h2v2h-2zM112 35h2v2h-2zM108 37h2v2h-2zM114 37h2v2h-2zM108 39h2v2h-2zM116 39h2v2h-2zM120 27h10v2h-10zM120 29h2v2h-2zM120 31h2v2h-2zM120 33h8v2h-8zM120 35h2v2h-2zM120 37h2v2h-2zM120 39h10v2h-10zM132 27h8v2h-8zM132 29h2v2h-2zM140 29h2v2h-2zM132 31h2v2h-2zM140 31h2v2h-2zM132 33h2v2h-2zM140 33h2v2h-2zM132 35h2v2h-2zM140 35h2v2h-2zM132 37h2v2h-2zM140 37h2v2h-2zM132 39h8v2h-8zM146 27h6v2h-6zM148 29h2v2h-2zM148 31h2v2h-2zM148 33h2v2h-2zM148 35h2v2h-2zM148 37h2v2h-2zM146 39h6v2h-6zM156 27h2v2h-2zM164 27h2v2h-2zM156 29h2v2h-2zM164 29h2v2h-2zM156 31h4v2h-4zM164 31h2v2h-2zM156 33h2v2h-2zM160 33h2v2h-2zM164 33h2v2h-2zM156 35h2v2h-2zM162 35h4v2h-4zM156 37h2v2h-2zM164 37h2v2h-2zM156 39h2v2h-2zM164 39h2v2h-2z" fill="#fff1e8"/>
+<path class="blink" d="M236 27h2v2h-2zM236 29h4v2h-4zM236 31h6v2h-6zM236 33h8v2h-8zM236 35h6v2h-6zM236 37h4v2h-4zM236 39h2v2h-2z" fill="#ffec27"/>
+</svg>

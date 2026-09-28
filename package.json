@@ -1,0 +1,14 @@
+{
+  "name": "jay-patel1337",
+  "private": true,
+  "type": "module",
+  "description": "Retro pixel GitHub profile README: generated SVGs + Spotify now-playing card",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "assets": "node scripts/build.js",
+    "live": "node scripts/build.js --live",
+    "spotify-token": "node scripts/spotify-token.js"
+  }
+}

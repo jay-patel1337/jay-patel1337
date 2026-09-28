@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="268" height="68" viewBox="0 0 268 68" shape-rendering="crispEdges" role="img" aria-label="INSTAGRAM">
+<title>INSTAGRAM</title>
+<style>
+@keyframes blink{50%{opacity:0}}
+@keyframes grow{from{transform:scaleX(0)}}
+@keyframes bob{50%{transform:translateY(-4px)}}
+.blink{animation:blink 1s steps(1) infinite}
+.blink-slow{animation:blink 2.4s steps(1) infinite}
+.grow{transform-box:fill-box;transform-origin:left;animation:grow 1.2s both}
+.bob{animation:bob 1s steps(1) infinite}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+
+<path d="M4 0h260v4h4v60h-4v4h-260v-4h-4v-60h4z" fill="#000000"/><path d="M8 4h252v4h4v52h-4v4h-252v-4h-4v-52h4z" fill="#fff1e8"/><path d="M12 8h244v4h4v44h-4v4h-244v-4h-4v-44h4z" fill="#1d2b53"/>
+<path d="M28 16h24v3h-24zM25 19h3v3h-3zM52 19h3v3h-3zM22 22h3v3h-3zM49 22h3v3h-3zM55 22h3v3h-3zM22 25h3v3h-3zM34 25h12v3h-12zM55 25h3v3h-3zM22 28h3v3h-3zM31 28h3v3h-3zM46 28h3v3h-3zM55 28h3v3h-3zM22 31h3v3h-3zM31 31h3v3h-3zM46 31h3v3h-3zM55 31h3v3h-3zM22 34h3v3h-3zM31 34h3v3h-3zM46 34h3v3h-3zM55 34h3v3h-3zM22 37h3v3h-3zM31 37h3v3h-3zM46 37h3v3h-3zM55 37h3v3h-3zM22 40h3v3h-3zM34 40h12v3h-12zM55 40h3v3h-3zM22 43h3v3h-3zM55 43h3v3h-3zM25 46h3v3h-3zM52 46h3v3h-3zM28 49h24v3h-24z" fill="#ff77a8"/>
+<path d="M74 27h6v2h-6zM76 29h2v2h-2zM76 31h2v2h-2zM76 33h2v2h-2zM76 35h2v2h-2zM76 37h2v2h-2zM74 39h6v2h-6zM84 27h2v2h-2zM92 27h2v2h-2zM84 29h2v2h-2zM92 29h2v2h-2zM84 31h4v2h-4zM92 31h2v2h-2zM84 33h2v2h-2zM88 33h2v2h-2zM92 33h2v2h-2zM84 35h2v2h-2zM90 35h4v2h-4zM84 37h2v2h-2zM92 37h2v2h-2zM84 39h2v2h-2zM92 39h2v2h-2zM98 27h8v2h-8zM96 29h2v2h-2zM96 31h2v2h-2zM98 33h6v2h-6zM104 35h2v2h-2zM104 37h2v2h-2zM96 39h8v2h-8zM108 27h10v2h-10zM112 29h2v2h-2zM112 31h2v2h-2zM112 33h2v2h-2zM112 35h2v2h-2zM112 37h2v2h-2zM112 39h2v2h-2zM122 27h6v2h-6zM120 29h2v2h-2zM128 29h2v2h-2zM120 31h2v2h-2zM128 31h2v2h-2zM120 33h10v2h-10zM120 35h2v2h-2zM128 35h2v2h-2zM120 37h2v2h-2zM128 37h2v2h-2zM120 39h2v2h-2zM128 39h2v2h-2zM134 27h6v2h-6zM132 29h2v2h-2zM140 29h2v2h-2zM132 31h2v2h-2zM132 33h2v2h-2zM136 33h6v2h-6zM132 35h2v2h-2zM140 35h2v2h-2zM132 37h2v2h-2zM140 37h2v2h-2zM134 39h8v2h-8zM144 27h8v2h-8zM144 29h2v2h-2zM152 29h2v2h-2zM144 31h2v2h-2zM152 31h2v2h-2zM144 33h8v2h-8zM144 35h2v2h-2zM148 35h2v2h-2zM144 37h2v2h-2zM150 37h2v2h-2zM144 39h2v2h-2zM152 39h2v2h-2zM158 27h6v2h-6zM156 29h2v2h-2zM164 29h2v2h-2zM156 31h2v2h-2zM164 31h2v2h-2zM156 33h10v2h-10zM156 35h2v2h-2zM164 35h2v2h-2zM156 37h2v2h-2zM164 37h2v2h-2zM156 39h2v2h-2zM164 39h2v2h-2zM168 27h2v2h-2zM176 27h2v2h-2zM168 29h4v2h-4zM174 29h4v2h-4zM168 31h2v2h-2zM172 31h2v2h-2zM176 31h2v2h-2zM168 33h2v2h-2zM172 33h2v2h-2zM176 33h2v2h-2zM168 35h2v2h-2zM176 35h2v2h-2zM168 37h2v2h-2zM176 37h2v2h-2zM168 39h2v2h-2zM176 39h2v2h-2z" fill="#fff1e8"/>
+<path class="blink" d="M236 27h2v2h-2zM236 29h4v2h-4zM236 31h6v2h-6zM236 33h8v2h-8zM236 35h6v2h-6zM236 37h4v2h-4zM236 39h2v2h-2z" fill="#ffec27"/>
+</svg>

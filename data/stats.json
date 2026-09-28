@@ -1,0 +1,36 @@
+{
+  "contributions": 145,
+  "currentStreak": 5,
+  "longestStreak": 5,
+  "stars": 1,
+  "repos": 5,
+  "languages": [
+    {
+      "name": "C++",
+      "bytes": 73318
+    },
+    {
+      "name": "C",
+      "bytes": 68668
+    },
+    {
+      "name": "HTML",
+      "bytes": 20187
+    },
+    {
+      "name": "Python",
+      "bytes": 16022
+    },
+    {
+      "name": "CSS",
+      "bytes": 12906
+    }
+  ],
+  "repoStars": {
+    "codealpha_tasks": 1,
+    "CPP_self": 0,
+    "C_self": 0,
+    "FoodiePieUp": 0,
+    "jay-patel1337": 0
+  }
+}

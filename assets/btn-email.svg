@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="268" height="68" viewBox="0 0 268 68" shape-rendering="crispEdges" role="img" aria-label="EMAIL">
+<title>EMAIL</title>
+<style>
+@keyframes blink{50%{opacity:0}}
+@keyframes grow{from{transform:scaleX(0)}}
+@keyframes bob{50%{transform:translateY(-4px)}}
+.blink{animation:blink 1s steps(1) infinite}
+.blink-slow{animation:blink 2.4s steps(1) infinite}
+.grow{transform-box:fill-box;transform-origin:left;animation:grow 1.2s both}
+.bob{animation:bob 1s steps(1) infinite}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+
+<path d="M4 0h260v4h4v60h-4v4h-260v-4h-4v-60h4z" fill="#000000"/><path d="M8 4h252v4h4v52h-4v4h-252v-4h-4v-52h4z" fill="#fff1e8"/><path d="M12 8h244v4h4v44h-4v4h-244v-4h-4v-44h4z" fill="#1d2b53"/>
+<path d="M22 19h36v3h-36zM22 22h6v3h-6zM52 22h6v3h-6zM22 25h3v3h-3zM28 25h3v3h-3zM49 25h3v3h-3zM55 25h3v3h-3zM22 28h3v3h-3zM31 28h3v3h-3zM46 28h3v3h-3zM55 28h3v3h-3zM22 31h3v3h-3zM34 31h3v3h-3zM43 31h3v3h-3zM55 31h3v3h-3zM22 34h3v3h-3zM37 34h6v3h-6zM55 34h3v3h-3zM22 37h3v3h-3zM55 37h3v3h-3zM22 40h3v3h-3zM55 40h3v3h-3zM22 43h36v3h-36z" fill="#ffec27"/>
+<path d="M72 27h10v2h-10zM72 29h2v2h-2zM72 31h2v2h-2zM72 33h8v2h-8zM72 35h2v2h-2zM72 37h2v2h-2zM72 39h10v2h-10zM84 27h2v2h-2zM92 27h2v2h-2zM84 29h4v2h-4zM90 29h4v2h-4zM84 31h2v2h-2zM88 31h2v2h-2zM92 31h2v2h-2zM84 33h2v2h-2zM88 33h2v2h-2zM92 33h2v2h-2zM84 35h2v2h-2zM92 35h2v2h-2zM84 37h2v2h-2zM92 37h2v2h-2zM84 39h2v2h-2zM92 39h2v2h-2zM98 27h6v2h-6zM96 29h2v2h-2zM104 29h2v2h-2zM96 31h2v2h-2zM104 31h2v2h-2zM96 33h10v2h-10zM96 35h2v2h-2zM104 35h2v2h-2zM96 37h2v2h-2zM104 37h2v2h-2zM96 39h2v2h-2zM104 39h2v2h-2zM110 27h6v2h-6zM112 29h2v2h-2zM112 31h2v2h-2zM112 33h2v2h-2zM112 35h2v2h-2zM112 37h2v2h-2zM110 39h6v2h-6zM120 27h2v2h-2zM120 29h2v2h-2zM120 31h2v2h-2zM120 33h2v2h-2zM120 35h2v2h-2zM120 37h2v2h-2zM120 39h10v2h-10z" fill="#fff1e8"/>
+<path class="blink" d="M236 27h2v2h-2zM236 29h4v2h-4zM236 31h6v2h-6zM236 33h8v2h-8zM236 35h6v2h-6zM236 37h4v2h-4zM236 39h2v2h-2z" fill="#ffec27"/>
+</svg>
