@@ -5,3 +5,12 @@ node_modules/
 *.log
 .DS_Store
 Thumbs.db
+
+# Local AI skills and anything they generate (not part of the profile)
+.agents/
+.claude/
+.impeccable/
+.impeccable-live.json
+.playwright-cli/
+test-results/
+playwright-report/

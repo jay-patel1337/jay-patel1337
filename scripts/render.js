@@ -130,7 +130,7 @@ export function playerCard(cfg) {
   const H = 300;
   const hs = 3;
   const idleW = S.HERO_IDLE[0][0].length * hs;
-  const idle = frames(S.HERO_IDLE, S.HERO_PAL, Math.round(126 - idleW / 2), 196 - S.HERO_IDLE[0].length * hs, hs, 1.4, 'breathe');
+  const idle = frames(S.HERO_IDLE, S.HERO_PAL, Math.round(126 - idleW / 2), 204 - S.HERO_IDLE[0].length * hs, hs, 1.4, 'breathe');
   const colors = { red: C.red, blue: C.blue, green: C.green, yellow: C.yellow, pink: C.pink };
   const lx = 252;
   const vx = lx + 84;
@@ -154,10 +154,10 @@ export function playerCard(cfg) {
   const body = `
 ${box(0, 0, W, H)}
 ${box(24, 24, 204, H - 48, { fill: C.ink, border: C.yellow })}
-${rect(40, 196, 172, 4, C.slate)}
+${rect(40, 204, 172, 4, C.slate)}
 ${idle.body}
-${text(cfg.name, 126, 214, { align: 'center', fill: C.yellow })}
-${text('▶ READY', 126, 240, { align: 'center', fill: C.green, cls: 'blink' })}
+${text(cfg.name, 126, 218, { align: 'center', fill: C.yellow })}
+${text('▶ READY', 126, 244, { align: 'center', fill: C.green, cls: 'blink' })}
 ${text('STATUS', lx, 28, { fill: C.yellow })}${dashes(lx + 84, 34, W - 24 - lx - 84, C.slate)}
 ${rows}
 ${bars}
@@ -474,10 +474,10 @@ function outlined(rows) {
 }
 
 export function playCard(cfg) {
-  const H = 220;
+  const H = 260;
   const r = rng(4242);
-  const roofA = 176;
-  const roofB = 184;
+  const roofA = 216;
+  const roofB = 224;
 
   let stars = '';
   for (let i = 0; i < 40; i++) stars += `M${Math.floor(r() * 206) * 4 + 8} ${Math.floor(r() * 30) * 4 + 12}h2v2h-2z`;
@@ -507,10 +507,10 @@ export function playCard(cfg) {
   const gy = roofB - grunt[0].length * hs;
 
   const walk = frames(grunt, HW.HOLLOW_PAL, gx, gy, hs, 0.5, 'walk');
-  const flap = frames(flyer, HW.HOLLOW_PAL, 520, 86, hs, 0.3, 'flap');
+  const flap = frames(flyer, HW.HOLLOW_PAL, 520, 112, hs, 0.3, 'flap');
   let orbs = '';
   [0, 1, 2, 3].forEach((i) => {
-    orbs += sprite(soul, HW.SOUL_PAL, 430 + i * 30, 150 - [0, 14, 14, 0][i], hs, ` class="bob" style="animation-delay:-${i * 0.25}s"`);
+    orbs += sprite(soul, HW.SOUL_PAL, 430 + i * 30, roofA - 30 - [0, 14, 14, 0][i], hs, ` class="bob" style="animation-delay:-${i * 0.25}s"`);
   });
 
   const logo = 'HOLLOW RUSH';

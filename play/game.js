@@ -152,8 +152,8 @@ const enemyBox = (e) => {
   const [ox, oy, w, h] = ENEMY[e.type].box;
   return { x: e.x + ox, y: e.y + oy, w, h };
 };
-const playerBox = () => ({ x: player.x - 6, y: player.y - 40, w: 12, h: 38 });
-const slashBox = () => ({ x: player.x, y: player.y - 46, w: player.bankai > 0 ? 54 : 48, h: 46 });
+const playerBox = () => ({ x: player.x - 7, y: player.y - 46, w: 14, h: 44 });
+const slashBox = () => ({ x: player.x + 4, y: player.y - 46, w: player.bankai > 0 ? 46 : 40, h: 42 });
 
 // ── Effects ──────────────────────────────────────────────────────────────────
 function burst(x, y, n, colors, spread = 90, up = 60, g = 300, life = 0.5, size = 1) {
