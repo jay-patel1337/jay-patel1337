@@ -7,6 +7,7 @@
     "node": ">=20"
   },
   "scripts": {
+    "dev": "node scripts/dev.js",
     "assets": "node scripts/build.js",
     "live": "node scripts/build.js --live",
     "spotify-token": "node scripts/spotify-token.js"

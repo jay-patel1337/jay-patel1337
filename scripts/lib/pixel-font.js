@@ -96,6 +96,11 @@ export function normalize(str) {
   return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toUpperCase();
 }
 
+// Raw 5×7 rows for one character (used by the canvas game).
+export function glyph(ch) {
+  return G[normalize(ch)] || G['?'];
+}
+
 export function supports(str) {
   return [...normalize(str)].every((ch) => G[ch]);
 }

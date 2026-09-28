@@ -1,6 +1,8 @@
 import { C, doc, text, box, bar, sprite, spriteSize, rng, pad, notched, notchedD, rect, textWidth } from './lib/svg.js';
 import { textPath, wrap } from './lib/pixel-font.js';
 import * as S from './lib/sprites.js';
+import * as HW from './lib/hollows.js';
+import { Grid } from './lib/pixel-canvas.js';
 
 const W = 840;
 
@@ -8,6 +10,16 @@ function dashes(x, y, w, color, h = 2) {
   let d = '';
   for (let i = 0; i < w; i += 8) d += `M${x + i} ${y}h4v${h}h-4z`;
   return `<path d="${d}" fill="${color}"/>`;
+}
+
+// Cycle sprite frames with CSS: each frame is visible for 1/n of the loop.
+function frames(list, pal, x, y, s, dur, name) {
+  const n = list.length;
+  const css = `.${name}{animation:${name} ${dur}s steps(1) infinite}@keyframes ${name}{0%{opacity:1}${(100 / n).toFixed(2)}%,100%{opacity:0}}`;
+  const body = list
+    .map((rows, i) => sprite(rows, pal, x, y, s, ` class="${name}" style="${i ? 'opacity:0;' : ''}animation-delay:${((dur / n) * i).toFixed(3)}s"`))
+    .join('');
+  return { css, body };
 }
 
 // Title row used inside most panels: yellow label left, optional note right, dashed rule under.
@@ -47,17 +59,16 @@ export function titleScreen(cfg) {
     ground += rect(x, 272, 32, 40, C.brown) + rect(x + 6, 282, 4, 4, '#6b2f1a') + rect(x + 22, 296, 4, 4, '#6b2f1a') + rect(x + 14, 304, 4, 4, '#6b2f1a');
   }
 
-  const css = `
+  const hs = 3;
+  const run = frames(S.HERO_RUN, S.HERO_PAL, 48, 264 - S.HERO_RUN[0].length * hs, hs, 0.48, 'run');
+  const css = run.css + `
 .far{animation:drift 120s linear infinite}
 .near{animation:drift 60s linear infinite}
 .tw{animation:blink 1.6s steps(1) infinite}
 .ground{animation:scroll .48s steps(8) infinite}
-.fa{animation:blink .36s steps(1) infinite}
-.fb{opacity:0;animation:show .36s steps(1) infinite}
 .shoot{opacity:0;animation:shoot 7s linear infinite 2s}
 @keyframes drift{to{transform:translateX(-840px)}}
 @keyframes scroll{to{transform:translateX(-32px)}}
-@keyframes show{50%{opacity:1}}
 @keyframes shoot{0%{opacity:1;transform:translate(0,0)}12%{opacity:0;transform:translate(-240px,120px)}100%{opacity:0}}
 `;
 
@@ -83,9 +94,8 @@ ${text(`${cfg.role} · ${cfg.school}`, W / 2, 136, { align: 'center', fill: C.cr
 ${text(`"${cfg.tagline}"`, W / 2, 164, { align: 'center', fill: C.pink })}
 ${text('▶ PRESS START ◀', W / 2, 200, { scale: 3, align: 'center', fill: C.yellow, cls: 'blink' })}
 <g class="ground">${ground}</g>
-${sprite(S.HERO_A, S.HERO_PAL, 96, 200, 4, ' class="fa"')}
-${sprite(S.HERO_B, S.HERO_PAL, 96, 200, 4, ' class="fb"')}
-${text(`(C) ${cfg.login}`, W / 2, 288, { align: 'center', fill: C.cream })}
+${run.body}
+${text('▶ CLICK TO PLAY HOLLOW RUSH ◀', W / 2, 288, { align: 'center', fill: C.yellow, cls: 'blink-slow' })}
 </g>`;
   return doc({ w: W, h: H, title: `${cfg.name}: ${cfg.tagline}`, css, body });
 }
@@ -118,6 +128,9 @@ ${label(5, 'LVL')}${value(5, pad(stats.repos, 2), C.green)}`;
 // ── 3. Player card ──────────────────────────────────────────────────────────
 export function playerCard(cfg) {
   const H = 300;
+  const hs = 4;
+  const idleW = S.HERO_IDLE[0][0].length * hs;
+  const idle = frames(S.HERO_IDLE, S.HERO_PAL, Math.round(126 - idleW / 2), 180 - S.HERO_IDLE[0].length * hs, hs, 1.4, 'breathe');
   const colors = { red: C.red, blue: C.blue, green: C.green, yellow: C.yellow, pink: C.pink };
   const lx = 252;
   const vx = lx + 84;
@@ -142,7 +155,7 @@ export function playerCard(cfg) {
 ${box(0, 0, W, H)}
 ${box(24, 24, 204, H - 48, { fill: C.ink, border: C.yellow })}
 ${rect(40, 180, 172, 4, C.slate)}
-<g class="bob">${sprite(S.HERO_A, S.HERO_PAL, 78, 52, 8)}</g>
+${idle.body}
 ${text(cfg.name, 126, 206, { align: 'center', fill: C.yellow })}
 ${text('▶ READY', 126, 234, { align: 'center', fill: C.green, cls: 'blink' })}
 ${text('STATUS', lx, 28, { fill: C.yellow })}${dashes(lx + 84, 34, W - 24 - lx - 84, C.slate)}
@@ -152,7 +165,7 @@ ${box(lx - 4, 224, W - 24 - lx + 4, 52, { u: 2, fill: C.ink, border: C.orange })
 ${text('QUEST', lx + 10, 243, { fill: C.orange })}
 ${text('▶', lx + 82, 243, { fill: C.orange, cls: 'blink' })}
 ${text(cfg.quest, lx + 106, 243, { fill: C.cream })}`;
-  return doc({ w: W, h: H, title: `${cfg.name}: ${cfg.role} at ${cfg.school}. Current quest: ${cfg.quest}`, body });
+  return doc({ w: W, h: H, title: `${cfg.name}: ${cfg.role} at ${cfg.school}. Current quest: ${cfg.quest}`, css: idle.css, body });
 }
 
 // ── 4. Inventory ────────────────────────────────────────────────────────────
@@ -452,4 +465,80 @@ ${text('CONTINUE?', cx, 92, { scale: 3, fill: C.red })}
 ${digits}
 ${text('▶ HIT FOLLOW TO SAVE YOUR PROGRESS', W / 2, 136, { align: 'center', fill: C.cream, cls: 'blink-slow' })}`;
   return doc({ w: W, h: H, title: 'Thanks for playing! Hit follow to save your progress.', css, body });
+}
+
+// ── 13. Hollow Rush play card (links to the game) ───────────────────────────
+function outlined(rows) {
+  const w = Math.max(...rows.map((r) => r.length));
+  return new Grid(w + 2, rows.length + 2).stamp(rows, 1, 1).outline('x').rows();
+}
+
+export function playCard(cfg) {
+  const H = 220;
+  const r = rng(4242);
+  const roofA = 176;
+  const roofB = 184;
+
+  let stars = '';
+  for (let i = 0; i < 40; i++) stars += `M${Math.floor(r() * 206) * 4 + 8} ${Math.floor(r() * 30) * 4 + 12}h2v2h-2z`;
+  let skyline = '';
+  for (let x = 8; x < W - 8; ) {
+    const w = 24 + Math.floor(r() * 40);
+    const h = 30 + Math.floor(r() * 60);
+    skyline += `M${x} ${roofA - h + 20}h${Math.min(w, W - 8 - x)}v${h}h-${Math.min(w, W - 8 - x)}z`;
+    x += w + 4;
+  }
+  const building = (x, w, roof) => {
+    let win = '';
+    for (let wy = roof + 12; wy < H - 10; wy += 14)
+      for (let wx = x + 10; wx < x + w - 10; wx += 14) if (r() < 0.25) win += `M${wx} ${wy}h6v6h-6z`;
+    return rect(x, roof, w, H - roof, '#141a3a') + rect(x, roof, w, 2, C.silver) + rect(x, roof + 2, w, 4, C.slate) + `<path d="${win}" fill="${C.yellow}"/>`;
+  };
+
+  const hs = 2;
+  const hero = S.HERO_SLASH;
+  const heroX = 110;
+  const heroY = roofA - hero.length * hs;
+  const wave = HW.crescent(36, C.cream, C.blue, '#1d62c0');
+  const grunt = HW.GRUNT.map(outlined);
+  const flyer = HW.FLYER.map(outlined);
+  const soul = HW.SOUL[0];
+  const gx = 660;
+  const gy = roofB - grunt[0].length * hs;
+
+  const walk = frames(grunt, HW.HOLLOW_PAL, gx, gy, hs, 0.5, 'walk');
+  const flap = frames(flyer, HW.HOLLOW_PAL, 520, 86, hs, 0.3, 'flap');
+  let orbs = '';
+  [0, 1, 2, 3].forEach((i) => {
+    orbs += sprite(soul, HW.SOUL_PAL, 430 + i * 30, 150 - [0, 14, 14, 0][i], hs, ` class="bob" style="animation-delay:-${i * 0.25}s"`);
+  });
+
+  const logo = 'HOLLOW RUSH';
+  const css = `${walk.css}${flap.css}
+.wave{animation:wave 2.4s steps(48) infinite}
+@keyframes wave{0%{transform:translateX(0);opacity:1}70%{transform:translateX(480px);opacity:1}71%,100%{transform:translateX(480px);opacity:0}}`;
+
+  const body = `
+<defs><clipPath id="pc"><path d="${notchedD(8, 8, W - 16, H - 16, 4)}"/></clipPath>
+<clipPath id="pl"><rect x="0" y="${20 + 16}" width="${W}" height="16"/></clipPath></defs>
+${box(0, 0, W, H, { fill: C.ink, border: C.yellow })}
+<g clip-path="url(#pc)">
+${rect(0, 96, W, H - 96, C.navy)}
+<path d="${stars}" fill="${C.lavender}"/>
+<path d="${skyline}" fill="#1f1a3d"/>
+${building(0, 520, roofA)}
+${building(600, 260, roofB)}
+${orbs}
+${flap.body}
+${walk.body}
+${sprite(hero, S.HERO_PAL, heroX, heroY, hs)}
+<g class="wave">${sprite(wave.rows, wave.pal, heroX + hero[0].length * hs - 10, roofA - 16 - 36, hs)}</g>
+</g>
+<path d="${textPath(logo, 28, 24, 4)}" fill="${C.plum}"/>
+<path d="${textPath(logo, 24, 20, 4)}" fill="${C.yellow}"/>
+<path d="${textPath(logo, 24, 20, 4)}" fill="${C.orange}" clip-path="url(#pl)"/>
+${text('A PLAYABLE RETRO RUNNER · JUMP, SLASH, GETSUGA!', 24, 62, { fill: C.pink })}
+${box(W - 236, 18, 212, 44, { u: 2, fill: C.red, border: C.cream })}
+${text('▶ CLICK TO PLAY', W - 130, 33, { align: 'center', fill: C.cream, cls: 'blink' })}`;
+  return doc({ w: W, h: H, title: 'Hollow Rush: a playable retro runner. Click to play in your browser.', css, body });
 }

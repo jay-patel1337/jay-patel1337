@@ -1,23 +1,16 @@
 import { C } from './svg.js';
+import { buildFrames, trim, PALETTE } from './ichigo.js';
 
-// Hero: orange spiky hair, black robe. Two walk frames share the upper body.
-const HERO_TOP = [
-  '....o.o.o...',
-  '...ooooooo..',
-  '..ooooooooo.',
-  '..oooossss..',
-  '..oossksks..',
-  '...sssssss..',
-  '....sssss...',
-  '...kkwwkkk..',
-  '..kkkwkkkkk.',
-  '.skkkkkkkks.',
-  '.skwwwwwwks.',
-  '..kkkkkkkk..',
-];
-export const HERO_A = [...HERO_TOP, '..kkk..kkk..', '..kk....kk..', '..kk....kk..', '.kkk....kkk.'];
-export const HERO_B = [...HERO_TOP, '...kkk.kk...', '....kk.kk...', '....kk.kk...', '...kkk.kkk..'];
-export const HERO_PAL = { o: C.orange, s: C.peach, k: C.black, w: C.cream };
+// Hero frames come from the same composer the game uses, cropped for the README.
+const HERO = buildFrames(false);
+const pick = (names) => Object.fromEntries(names.map((n) => [n, HERO[n]]));
+const RUN = trim(pick(['run0', 'run1', 'run2', 'run3']));
+const IDLE = trim(pick(['idle0', 'idle1']));
+const SLASH = trim(pick(['slash1']));
+export const HERO_RUN = [RUN.run0, RUN.run1, RUN.run2, RUN.run3];
+export const HERO_IDLE = [IDLE.idle0, IDLE.idle1];
+export const HERO_SLASH = SLASH.slash1;
+export const HERO_PAL = PALETTE;
 
 export const MOON = [
   '.....yyyyyy.....',

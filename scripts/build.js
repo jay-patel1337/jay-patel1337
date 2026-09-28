@@ -27,6 +27,7 @@ const dividers = {
   levels: 'WORLD 3 · LEVEL SELECT',
   trophies: 'WORLD 4 · TROPHY ROOM',
   save: 'WORLD 5 · SAVE POINT',
+  bonus: 'BONUS STAGE · HOLLOW RUSH',
   boss: 'FINAL WORLD · BOSS FIGHT',
   continue: 'CONTINUE?',
 };
@@ -41,6 +42,7 @@ const assets = {
   'achievements.svg': R.achievements(config, stats),
   'dialogue.svg': R.dialogue(config, date),
   'game-over.svg': R.gameOver(config),
+  'play-card.svg': R.playCard(config),
   'btn-linkedin.svg': R.button('linkedin', 'LINKEDIN'),
   'btn-instagram.svg': R.button('instagram', 'INSTAGRAM'),
   'btn-email.svg': R.button('email', 'EMAIL'),
