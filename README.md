@@ -61,9 +61,7 @@ int main() {
 
 <img src="assets/divider-save.svg" width="100%" alt="World 5: Save point">
 <img src="assets/dialogue.svg" width="100%" alt="Anime quote of the day from Bleach, Another or Erased">
-<!-- NOW-PLAYING:START (turned on once the Vercel deploy is live)
-<a href="https://jay-patel1337.vercel.app/api/now-playing?open"><img src="https://jay-patel1337.vercel.app/api/now-playing" width="100%" alt="What I'm listening to on Spotify right now"></a>
-NOW-PLAYING:END -->
+<a href="https://jay-patel1337-six.vercel.app/api/now-playing?open"><img src="https://jay-patel1337-six.vercel.app/api/now-playing" width="100%" alt="What I'm listening to on Spotify right now"></a>
 
 <img src="assets/divider-boss.svg" width="100%" alt="Final world: Boss fight">
 <picture>
