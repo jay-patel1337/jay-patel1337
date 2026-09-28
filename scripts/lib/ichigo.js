@@ -43,36 +43,28 @@ export const PALETTE = {
 export const MASK_PALETTE = { ...PALETTE, x: '#7e2553' };
 export const BANKAI_PALETTE = MASK_PALETTE; // kept for older imports
 
+// Full mane with small spike tips (placed at local (4, -2); the face keeps its old position).
 const HEAD = [
-  '..........Y...Y.....',
-  '......Y..YO..YO.....',
-  '....Y.OY.OOYOOO.Y...',
-  '...qOOOOYOOOOOOYO...',
-  '..qoOOOOOOOOYOOOOO..',
-  '.qooOOOOOOOOOOOOOOY.',
-  'qoooOOYOOOOOOOOYOOOO',
-  '.qooOOOOOOOOOOOOOOOO',
-  'qqooOOOoOOsOOOoOsOOq',
-  '.qoooOossOOssOOssOq.',
-  '..qooSsqqqssqqqsss..',
-  '..qoSSsseessseesss..',
-  '..qqSSsseessssesSs..',
-  '...qSssssssssssss...',
-  '....Sssssssmmmss....',
-  '.....SSsssssssss....',
-  '.......SSSsssS......',
+  '......Y...Y...Y...Y.....',
+  '.....qOY.YOY.YOY.YOY....',
+  '...qqoOOOOOOOOOOOOOOOY..',
+  '..qooOOOOYOOOOOYOOOOOO..',
+  '.qqooOOOOOOOOOOOOOOOOOY.',
+  'qqooOOOOOOOYOOOOOOOOOO..',
+  '.qoooOOOOOOOOOOOOOYOOOOY',
+  'qqoooOOOOOOOOOOOOOOOOOO.',
+  '.qoooOOOOOYOOOOOOOOOOOOY',
+  'qqoooooOOOOOOOOoOOOOoOO.',
+  'qooooooOOOoOOsOOOoOsOOq.',
+  '.qooqoooOossOOssOOssOq..',
+  '..qooqooSsqqqssqqqsss...',
+  '...qoqoSSsseessseesss...',
+  '...qqqqSSsseessssesSs...',
+  '....qqqSssssssssssss....',
+  '......qSssssssmmmss.....',
+  '........SSsssssssss.....',
+  '..........SSSsssS.......',
 ];
-const CROWN = [
-  '....Y.......Y.......',
-  '...YO......YO....Y..',
-  '..YOO.....YOO...YO..',
-  '.qOOO....YOOO..YOO..',
-  'qoOOOO..OOOOOOOOOO..',
-  'qoOOOOOOOOOOOOOOOO..',
-  '.qoOOOOOOOOOOOOOOO..',
-  'qqoOOOOOOOOOOOOOO...',
-];
-const BACK_HAIR = ['......o', '....qoO', '..qqooO', 'qqooooO', '..qoooO', '...qooO', '.qqoooO', '...qooo', '....qoo', '......q'];
 
 // Hollow mask over the face: white bone, red stripes, black eye holes, teeth.
 const MASK = [
@@ -297,9 +289,7 @@ function compose({ legs, arm = 'low', free = 'hip', bob = 0, flutter = 0, mask =
   v.stamp(skirt, sx, 28);
   collar(v, bob);
   coat(v, bob);
-  v.stamp(CROWN, 4, bob - 3);
-  v.stamp(BACK_HAIR, 1, bob + 4);
-  v.stamp(HEAD, 7, bob);
+  v.stamp(HEAD, 4, bob - 2);
   if (mask) v.stamp(MASK, 11, 8 + bob);
   if (free !== 'back') v.stamp(FREE_ARM[free][0], FREE_ARM[free][1], FREE_ARM[free][2] + bob);
   sword(v, arm, flutter);
