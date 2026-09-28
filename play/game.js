@@ -266,7 +266,7 @@ function startBankai() {
   shake = 6;
   hitstop = 0.15;
   sfx.bankai();
-  say('BANKAI!', '#ff004d', 1.5);
+  say('HOLLOW MASK!', '#ff004d', 1.5);
   burst(player.x, player.y - 16, 40, ['#ff004d', '#16162a', '#7e2553'], 140, 120, 0, 1);
 }
 
@@ -360,7 +360,7 @@ function updatePlayer(dt) {
   if (p.action) {
     p.actionT += dt;
     if (p.action === 'getsuga') {
-      if (p.actionT < 0.14) burst(p.x + 10, p.y - 24, 1, p.bankai > 0 ? ['#ff004d'] : ['#29adff', '#9fe2ff'], 30, 30, 0, 0.3);
+      if (p.actionT < 0.14) burst(p.x + 10, p.y - 24, 1, p.bankai > 0 ? ['#ff004d', '#fff1e8'] : ['#ff004d', '#16162a'], 30, 30, 0, 0.3);
       if (!p.waveFired && p.actionT >= 0.14) {
         p.waveFired = true;
         waves.push({ x: p.x + 17, y: p.y - 22, bankai: p.bankai > 0, id: Math.random() });
@@ -378,7 +378,7 @@ function updatePlayer(dt) {
   if (p.bankai > 0) {
     p.bankai -= dt;
     if (chance(0.5)) burst(p.x - 6, p.y - rand(4, 28), 1, ['#ff004d', '#7e2553'], 20, 20, -60, 0.5);
-    if (p.bankai <= 0) say('BANKAI WORE OFF', '#83769c', 1);
+    if (p.bankai <= 0) say('MASK SHATTERED', '#83769c', 1);
   }
   p.runPhase += (speed * dt) / 13;
 
@@ -449,7 +449,7 @@ function updateWorld(dt) {
     const wb = { x: w.x - 2, y: w.y - h / 2, w: 16, h };
     for (const e of enemies) if (!e.dead && e.hitBy !== w.id && overlap(wb, enemyBox(e))) (e.hitBy = w.id), damage(e, 9);
     for (const c of ceros) if (!c.dead && overlap(wb, { x: c.x - 5, y: c.y - 5, w: 10, h: 10 })) (c.dead = true), burst(c.x, c.y, 8, ['#ff004d', '#ff77a8'], 60, 40, 0, 0.3);
-    if (chance(0.8)) burst(w.x, w.y + rand(-h / 2, h / 2), 1, w.bankai ? ['#ff004d', '#16162a'] : ['#29adff', '#fff1e8'], 10, 10, 0, 0.3);
+    if (chance(0.8)) burst(w.x, w.y + rand(-h / 2, h / 2), 1, w.bankai ? ['#ff004d', '#fff1e8'] : ['#ff004d', '#16162a'], 10, 10, 0, 0.3);
   }
 
   for (const c of ceros) {
@@ -653,11 +653,11 @@ function drawHud() {
   }
   if (full && p.bankai <= 0 && Math.floor(t * 3) % 2 === 0) text(ctx, touch ? 'GETSUGA READY!' : 'GETSUGA READY! [C]', 4, 33, '#9fe2ff');
   if (p.bankai > 0) {
-    text(ctx, 'BANKAI', 5, 34, '#ff004d');
+    text(ctx, 'MASK', 5, 34, '#ff004d');
     ctx.fillStyle = '#7e2553';
-    ctx.fillRect(42, 35, 40, 4);
+    ctx.fillRect(32, 35, 40, 4);
     ctx.fillStyle = '#ff004d';
-    ctx.fillRect(42, 35, Math.ceil((40 * p.bankai) / BANKAI_TIME), 4);
+    ctx.fillRect(32, 35, Math.ceil((40 * p.bankai) / BANKAI_TIME), 4);
   }
   text(ctx, String(score()).padStart(6, '0'), VW / 2, 4, '#fff1e8', { scale: 2, align: 'center', shadow: '#000' });
   text(ctx, `HI ${String(Math.max(best, score())).padStart(6, '0')}`, VW - 4, 4, '#ff77a8', { align: 'right' });

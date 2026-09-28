@@ -499,7 +499,7 @@ export function playCard(cfg) {
   const hero = S.HERO_SLASH;
   const heroX = 110;
   const heroY = roofA - hero.length * hs;
-  const wave = HW.crescent(36, C.cream, C.blue, '#1d62c0');
+  const wave = HW.crescent(36, C.red, '#16162a', C.plum);
   const grunt = HW.GRUNT.map(outlined);
   const flyer = HW.FLYER.map(outlined);
   const soul = HW.SOUL[0];

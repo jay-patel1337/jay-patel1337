@@ -83,8 +83,9 @@ export function loadArt() {
   const grunt = pair(GRUNT, HOLLOW_PAL);
   const flyer = pair(FLYER, HOLLOW_PAL);
   const big = pair([bigHollow(false), bigHollow(true)], HOLLOW_PAL);
-  const waveN = crescent(36, '#fff1e8', '#29adff', '#1d62c0');
-  const waveB = crescent(44, '#ff004d', '#16162a', '#7e2553');
+  // Tensa Zangetsu's Getsuga is black with a crimson edge; masked it burns crimson and white.
+  const waveN = crescent(36, '#ff004d', '#16162a', '#7e2553');
+  const waveB = crescent(44, '#fff1e8', '#ff004d', '#7e2553');
 
   return {
     hero: each(hero, (r) => bake(r, PALETTE)),

@@ -72,8 +72,9 @@ export const SOUL_PAL = { b: '#29adff', B: '#9fe2ff', w: '#fff1e8' };
 export const HEART = ['.rr...rr.', 'rrrr.rrrr', 'rwrrrrrrr', 'rrrrrrrrr', '.rrrrrrr.', '..rrrrr..', '...rrr...', '....r....'];
 export const HEART_PAL = { r: '#ff004d', w: '#fff1e8', x: '#000000' };
 
-export const BANKAI_ORB = ['...rrrrr...', '..rkkkkkr..', '.rkkRkkkkr.', 'rkkRkkkkkkr', 'rkRkkkkkkkr', 'rkRkkkkkkkr', 'rkkRkkkkkkr', 'rkkkRRkkkkr', '.rkkkkkkkr.', '..rkkkkkr..', '...rrrrr...'];
-export const BANKAI_PAL = { r: '#ff004d', R: '#ff77a8', k: '#16162a', x: '#000000' };
+// Power-up pickup: a small Hollow mask.
+export const BANKAI_ORB = ['...MMMMM...', '.MMMMMMMMM.', '.MrMMMMMMM.', 'MMrxxMMxxMM', 'MMrxxMMxxMM', 'MMrrMMMMMMM', '.MMrMMMMMM.', '.MZMZMZMZM.', '..ZZZZZZZ..'];
+export const BANKAI_PAL = { M: '#fff4ea', Z: '#c8c4d0', r: '#ff004d', x: '#000000' };
 
 // Getsuga Tensho: the band between two offset ellipses, bright on the leading edge.
 export function crescent(h, rim, core, shade) {
