@@ -6,9 +6,9 @@
 
 import { Grid } from './pixel-canvas.js';
 
-export const FRAME_W = 76;
+export const FRAME_W = 88;
 export const FRAME_H = 62;
-const BX = 4; // base sprite position inside the frame
+const BX = 12; // base sprite position inside the frame
 const BY = 5;
 export const AX = BX + 28;
 export const AY = BY + 56;
@@ -93,7 +93,7 @@ const BASE = [
   '..................kkkkkk................',
 ];
 
-// Where the held sword sits in the base (erased when he swings it from the other hand).
+// The sword arm in the base: sleeve, fist, chain and blade are lifted out and redrawn when he swings.
 const CHAIN = [[31, 14], [31, 15], [32, 13], [32, 14], [33, 11], [33, 12], [34, 11], [35, 12], [36, 12], [37, 13], [38, 13]];
 const BLADE_OVER_COAT = [[40, 24, 25], [41, 23, 24], [42, 22, 23], [43, 21, 23], [44, 19, 22], [45, 18, 21], [46, 16, 20], [47, 13, 20]];
 const BLADE_PAST_COAT = [[45, 11], [46, 11], [47, 12], [48, 18], [49, 18], [50, 18]];
@@ -125,6 +125,9 @@ const BLADE = ['j', 'k', 'r']; // shine, black body, red edge
 function editedBase({ sword, feet, mask }) {
   const b = BASE.map((r) => [...r, '.', '.', '.', '.', '.', '.']);
   if (sword !== 'held') {
+    for (let y = 25; y <= 32; y++) for (let x = 11; x <= 23; x++) b[y][x] = '.';
+    for (let y = 33; y <= 36; y++) for (let x = 11; x <= 22; x++) b[y][x] = '.';
+    b[37][18] = '.';
     for (const [y, x] of CHAIN) b[y][x] = '.';
     for (const [y, x0, x1] of BLADE_OVER_COAT) for (let x = x0; x <= x1; x++) if (b[y][x] !== '.') b[y][x] = 'k';
     for (const [y, x1] of BLADE_PAST_COAT) for (let x = 0; x <= x1; x++) b[y][x] = '.';
@@ -144,23 +147,29 @@ function editedBase({ sword, feet, mask }) {
   return b;
 }
 
-// Single Tensa Zangetsu swung from the front hand (base coordinates).
+// Left-arm rig: the same hand that holds Tensa Zangetsu in the reference swings it.
+// Poses give the fist position, blade base and tip, guard, and where the chain hangs (base coordinates).
+const SHOULDER = [21, 25];
+const SWING = {
+  windup: { hand: [12, 36], blade: [[9, 36], [-12, 38]], guard: [10, 35, 1, 3], chain: [[14, 37], [15, 39], [14, 41], [15, 43]] },
+  strike: { hand: [36, 31], blade: [[39, 30], [64, 28]], guard: [38, 29, 1, 3], chain: [[33, 33], [34, 35], [33, 37], [34, 39]] },
+  follow: { hand: [32, 19], blade: [[34, 16], [50, 1]], guard: [33, 16, 3, 1], chain: [[30, 21], [31, 23], [30, 25], [31, 27]] },
+};
+const SLEEVE = ['k', 'K', 'k', 'k']; // grey highlight along the outer edge, like the traced sleeve
+const FIST = ['.kss.', 'ksSsk', 'kSssk', '.kkk.'];
+
 function swing(v, pose) {
-  const chain = (pts) => pts.forEach(([y, x], i) => i % 2 === 0 && v.set(x, y, 'k'));
-  if (pose === 'windup') {
-    v.rect(37, 31, 3, 1, 'W');
-    v.line(38, 30, 45, 6, BLADE);
-    chain([[38, 37], [39, 36], [40, 36], [41, 37], [42, 37], [43, 36]]);
-  } else if (pose === 'strike') {
-    v.rect(40, 33, 1, 4, 'W');
-    v.line(41, 34, 66, 34, BLADE, true);
-    v.set(67, 35, 'k').set(67, 36, 'r');
-    chain([[36, 34], [37, 34], [38, 33], [39, 33], [40, 34], [41, 34], [42, 33]]);
-  } else if (pose === 'follow') {
-    v.rect(39, 36, 2, 2, 'W');
-    v.line(41, 38, 56, 53, BLADE);
-    chain([[38, 36], [39, 35], [40, 35], [41, 36], [42, 36]]);
-  }
+  const p = SWING[pose];
+  const [hx, hy] = p.hand;
+  const steep = (a, b) => Math.abs(b[1] - a[1]) > Math.abs(b[0] - a[0]);
+  // chain first (it hangs behind the arm), then the blade, sleeve and fist on top
+  p.chain.forEach(([x, y]) => v.set(x, y, 'k'));
+  const [b0, b1] = p.blade;
+  v.line(b0[0], b0[1], b1[0], b1[1], BLADE, !steep(b0, b1));
+  const [gx, gy, gw, gh] = p.guard;
+  v.rect(gx, gy, gw, gh, 'W');
+  v.line(SHOULDER[0], SHOULDER[1], hx, hy, SLEEVE, !steep(SHOULDER, p.hand));
+  FIST.forEach((row, dy) => [...row].forEach((c, dx) => c !== '.' && v.set(hx - 2 + dx, hy - 2 + dy, c)));
 }
 
 class View {
