@@ -3,8 +3,12 @@
   "currentStreak": 5,
   "longestStreak": 5,
   "stars": 1,
-  "repos": 5,
+  "repos": 6,
   "languages": [
+    {
+      "name": "TypeScript",
+      "bytes": 213308
+    },
     {
       "name": "C++",
       "bytes": 73318
@@ -18,12 +22,24 @@
       "bytes": 20187
     },
     {
+      "name": "CSS",
+      "bytes": 18756
+    },
+    {
       "name": "Python",
       "bytes": 16022
     },
     {
-      "name": "CSS",
-      "bytes": 12906
+      "name": "JavaScript",
+      "bytes": 10017
+    },
+    {
+      "name": "Batchfile",
+      "bytes": 2322
+    },
+    {
+      "name": "Dockerfile",
+      "bytes": 898
     }
   ],
   "repoStars": {
@@ -31,6 +47,7 @@
     "codealpha_tasks": 1,
     "C_self": 0,
     "CPP_self": 0,
-    "jay-patel1337": 0
+    "jay-patel1337": 0,
+    "CodeXLab-Website": 0
   }
 }
